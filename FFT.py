@@ -17,9 +17,9 @@ base = pd.read_csv('AirQualityUCI.csv')
 base2 = pd.read_excel("AirQualityUCI.xlsx")
 filtred=reject_outliers(pd.DataFrame(base2, columns={'T'}))
 # Number of sample points
-N = 1000
+N = 9357
 # sample spacing
-T = 1.0 /1000.0
+T = 1.0 /9357.0
 
 plt.figure(2)
 plt.plot(pd.DataFrame(base2, columns={'Date'}), filtred)
@@ -36,7 +36,7 @@ plt.plot(xf, 2.0/N * np.abs(yf[0:N//2]))
 plt.grid()
 
 
-plt.figure(3)
+plt.figure(1)
 yf = fft(filtred2)
 xf = np.linspace(0.0, 1.0/(2.0*T), N//2)
 plt.plot(xf, 2.0/N * np.abs(yf[0:N//2]))
