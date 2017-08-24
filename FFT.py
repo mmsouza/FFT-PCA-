@@ -1,12 +1,11 @@
-import  numpy.fft as np_fft
+import numpy.fft as np_fft
 import numpy as np
-import  pandas as  pd
-import  matplotlib.pyplot as plt
+import pandas as  pd
+import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from scipy.fftpack import fft
-
-
-
+import scipy as scp
+import matplotlib.dates as dates
 
 
 def reject_outliers(data, m=2):
@@ -15,12 +14,49 @@ def reject_outliers(data, m=2):
 
 base = pd.read_csv('AirQualityUCI.csv')
 base2 = pd.read_excel("AirQualityUCI.xlsx")
-filtred=reject_outliers(pd.DataFrame(base2, columns={'T'}))
-# Number of sample points
-N = 9357
-# sample spacing
-T = 1.0 /9357.0
+filtred = reject_outliers(pd.DataFrame(base2, columns={'T'}))
 
+A = pd.DataFrame(base2)
+
+# print(A.loc[0:24, "T"])
+
+
+# Number of sample points
+N = 400
+# sample spacing
+T = 1.0 / 400.0
+
+plt.figure(1)
+temperature_24 = A.loc[0:48, "T"]
+nox_24 = A.loc[0:24, "NOx(GT)"]
+time = A.loc[0:24, "Time"]
+
+B = temperature_24
+B=B.append(B)
+B=B.append(B)
+B=B.append(B)
+B=B.append(B)
+plt.plot(np.arange(len(reject_outliers(B))), reject_outliers(B))
+
+
+yf = fft(B)
+print(yf)
+xf = np.linspace(0.0, 1.0 / (2.0 * T), N // 2)
+figure = plt.figure(2)
+
+figure.suptitle('FFT', fontsize=14, fontweight='bold')
+
+
+plt.plot(xf, 2.0 / N * np.abs(yf[0:N // 2]))
+
+plt.grid()
+
+
+
+
+plt.show()
+
+'''''
 plt.figure(2)
 plt.plot(pd.DataFrame(base2, columns={'Date'}), filtred)
 
@@ -62,7 +98,7 @@ print(len(base2['T']))
 
 
 
-'''''
+
 plt.figure(1)
 
 plt.plot(pd.DataFrame(base2, columns={'Date'})  ,pd.DataFrame(base2, columns={'T'}))
