@@ -22,21 +22,21 @@ A = pd.DataFrame(base2)
 
 
 # Number of sample points
-N = 400
+N = 48
 # sample spacing
-T = 1.0 / 400.0
+T = 1.0 / 48
 
 plt.figure(1)
 temperature_24 = A.loc[0:48, "T"]
 nox_24 = A.loc[0:24, "NOx(GT)"]
 time = A.loc[0:24, "Time"]
 
-B = temperature_24
-B=B.append(B)
-B=B.append(B)
-B=B.append(B)
-B=B.append(B)
-plt.plot(np.arange(len(reject_outliers(B))), reject_outliers(B))
+B = nox_24
+#B=B.append(B)
+#B=B.append(B)
+#B=B.append(B)
+#B=B.append(B)
+#plt.plot(np.arange(len(reject_outliers(B))), reject_outliers(B))
 
 
 yf = fft(B)
@@ -47,7 +47,7 @@ figure = plt.figure(2)
 figure.suptitle('FFT', fontsize=14, fontweight='bold')
 
 
-plt.plot(xf, 2.0 / N * np.abs(yf[0:N // 2]))
+plt.scatter(xf, 2.0 / N * np.abs(yf[0:N // 2]))
 
 plt.grid()
 
