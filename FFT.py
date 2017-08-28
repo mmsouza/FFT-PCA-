@@ -1,10 +1,10 @@
 import numpy.fft as np_fft
 import numpy as np
-import pandas as  pd
+import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from scipy.fftpack import fft
-import scipy as scp
+from scipy.signal import detrend
 import matplotlib.dates as dates
 
 
@@ -21,39 +21,43 @@ A = pd.DataFrame(base2)
 # print(A.loc[0:24, "T"])
 
 
-# Number of sample points
-N = 48
-# sample spacing
-T = 1.0 / 48
+subset = base2.iloc[:, 10:13]
 
-plt.figure(1)
+# print(base2.iloc[0:48,2:13])
+# Number of sample points
+N = len(subset.index)
+# sample spacing
+T = 1.0 / len(subset.index)
 temperature_24 = A.loc[0:48, "T"]
 nox_24 = A.loc[0:24, "NOx(GT)"]
 time = A.loc[0:24, "Time"]
 
-B = nox_24
-#B=B.append(B)
-#B=B.append(B)
-#B=B.append(B)
-#B=B.append(B)
-#plt.plot(np.arange(len(reject_outliers(B))), reject_outliers(B))
+
+i=1
+for column in subset:
+     B = subset[column]
+     B=reject_outliers(B)
 
 
-yf = fft(B)
-print(yf)
-xf = np.linspace(0.0, 1.0 / (2.0 * T), N // 2)
-figure = plt.figure(2)
+     #B=B.append(B)
+     #B=B.append(B)
+     #B=B.append(B)
+     #B=B.append(B)
+     #B = detrend(B)
+     plt.figure(i)
+     i = i + 1
+     plt.plot(np.arange(len(B)), B)
+     yf = fft(B)
+#print(yf)
+     xf = np.linspace(0, 1.0 / (2.0 * T), N // 2)
+     figure = plt.figure(i)
 
-figure.suptitle('FFT', fontsize=14, fontweight='bold')
+     figure.suptitle('FFT', fontsize=14, fontweight='bold')
 
+     plt.scatter(xf, 2.0 / N * np.abs(yf[0:N // 2]))
 
-plt.scatter(xf, 2.0 / N * np.abs(yf[0:N // 2]))
-
-plt.grid()
-
-
-
-
+     plt.grid()
+     i=i+1
 plt.show()
 
 '''''
