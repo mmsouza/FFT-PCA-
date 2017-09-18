@@ -16,7 +16,7 @@ def hf_fft(data):
     yf = fft(detrend(data))
     xf = np.linspace(0, 1.0 / (2.0 * t), n // 2)
     yff = n * np.abs(yf[0:n // 2])
-    return xf, yf, yff
+    return xf, yff, yf
 
 
 def plot_fft(xf, yff, name, method='plot', save=False):
@@ -46,16 +46,16 @@ if __name__ == "__main__":
     datafff.loc[1]= np.array(yff)
     print(datafff)
 
-'''
+
     step= 24
     for n in range(0, 48, step):
         subset_df = df.loc[n: n+step, "T"]
         plt.figure()
         plt.plot(subset_df)
 
-        xf, yf, yff = hf_fft(subset_df)
+        xf,yff, yf = hf_fft(subset_df)
         print(yff)
 
         plot_fft(xf, yff, "T"+str(n), method='scatter',save= True)
 plt.show()
-'''
+

@@ -44,7 +44,7 @@ while last <= len(data):
             plt.savefig(str(last) + str(next) + 'data.jpg')
 
             N = len(subset)
-            T = 1.0 / 100
+            T = 1.0 / len(subset)
             yf = fft(detrend(subset))  # remove dc component to eliminate the freq zero
             xf = np.linspace(0, 1.0 / (2.0 * T), N // 2)
             yfft = N * np.abs(yf[0:N // 2])
@@ -67,13 +67,13 @@ while last <= len(data):
                     n.insert(len(n), (x.max(), str(i) + '-' + str(ii)))
 
                 i, ii = ii + 1, ii + step
-                n.sort()
+                #n.sort()
 
             for z in n:
                 m += z[1] + "#"
 
                 # print("name:" + subset.name + " At:" + str(last) + "-" + str(next) + "Signatures:" + str(n))
-                # print(m)
+            print(m)
             signature_list.insert(len(signature_list), m)
         col += 1
     transactions_list.insert(len(transactions_list), signature_list)
