@@ -97,4 +97,6 @@ with pd.option_context('display.max_rows', None, 'display.max_columns', None ):
 print(association_rules(frequent_itemsets, metric="confidence", min_threshold=0.9))
 association_rules(frequent_itemsets, metric="confidence", min_threshold=0.9).to_excel('path_to_file.xlsx', sheet_name='Sheet1')
 
+
+
 '''
