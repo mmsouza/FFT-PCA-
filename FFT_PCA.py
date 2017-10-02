@@ -6,18 +6,18 @@ from sklearn.preprocessing import normalize
 import matplotlib.pyplot as plt
 from matplotlib.axes import  Axes
 
-data = pd.read_excel("AirQualityUCI.xlsx")
+#data = pd.read_excel("AirQualityUCI.xlsx")
+data = pd.read_csv("normal_24.csv")
 
-df = data.loc[0:48, 'T']
-xf,yff,yf =fft.hf_fft(df)
+print(len(data.columns))
 
 step = 200
 last, next = 0, step
 list_dataframes = []
 list_aux = []
-col = 2
+col = 0
 
-while col <= len(data.columns) - 1:
+while col <= len(data.columns) -1:
     last, next = 0, step
     while last <= len(data):
         subset = data.iloc[last:next, col]
@@ -33,11 +33,11 @@ while col <= len(data.columns) - 1:
 
 
 
-
+print(len(list_dataframes))
 
 list_aux = []
-for i in range(0 , 12):
-    dfaux= (list_dataframes[i].loc[:, 1:13])
+for i in range(0 , 41):
+    dfaux= (list_dataframes[i].loc[:, 1:199])
     dfaux.dropna(inplace=True)
     dfaux = pd.DataFrame(normalize(dfaux))
 
@@ -57,8 +57,8 @@ pca = decomposition.PCA(n_components = 2)
 pca.fit(dftotal)
 
 
-for i in range(0 , 12):
-    dfaux=list_dataframes[i].loc[:, 1:13]
+for i in range(0 , 41):
+    dfaux=list_dataframes[i].loc[:, 1:199]
     dfaux.dropna(inplace= True)
     dfaux = normalize(dfaux)
 
