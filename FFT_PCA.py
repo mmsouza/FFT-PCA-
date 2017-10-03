@@ -1,4 +1,4 @@
-import fft
+import FFT as fft
 from sklearn import decomposition
 import pandas as pd
 from sklearn.preprocessing import normalize
@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import Data_prep as dp
 from matplotlib.axes import Axes
 import time
-
+from sklearn.model_selection import train_test_split
 
 import pandas as pd
 from keras.models import Sequential
@@ -66,8 +66,8 @@ def fft_pac_pivoting(list_dataframes, pca):
 
         dfaux = list_dataframes[i]
         dfaux.dropna(inplace=True)
-
         names = []
+
         for j in range(0, pca.n_components):
             names.insert(len(names), "VAR_" + str(i) + "_PC_" + str(j))
 
@@ -114,6 +114,8 @@ if __name__ == "__main__":
     full_df = normal_piv_df.append(fault_piv_df, ignore_index=True)
     full_df = full_df.sample(frac=1).reset_index(drop=True)
 
+    #X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
+
     print(full_df.describe())
     # Specify the data
     X = full_df.iloc[:, 0:40].astype(float)
@@ -132,7 +134,7 @@ if __name__ == "__main__":
         return model
 
 
-    estimator = KerasClassifier(build_fn=baseline_model, epochs=20, batch_size=5, verbose=1)
+    estimator = KerasClassifier(build_fn=baseline_model, epochs=20, batch_size=32, verbose=1)
     estimator.fit(np.array(X), np.array(y))
 
     kfold = KFold(n_splits=10, shuffle=True, random_state=seed)

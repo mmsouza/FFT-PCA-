@@ -6,7 +6,6 @@ from keras.models import Sequential
 
 # Import `Dense` from `keras.layers`
 from keras.layers import Dense
-
 import tensorflow as ts
 
 # Read in white wine data

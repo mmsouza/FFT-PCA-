@@ -10,12 +10,12 @@ from sklearn.model_selection import KFold
 from sklearn.pipeline import Pipeline
 import numpy as np
 from sklearn.model_selection import train_test_split
-
+from sklearn import decomposition
 
 seed = 7
 np.random.seed(seed)
 
-normal_data = pd.read_csv('C:/Users/Lais-WHart/Google Drive/UFRGS/Mestrado/Data mining/Normal/normal_output.csv',
+normal_data = pd.read_csv('C:/Users/Lais-WHart/Google Drive/UFRGS/Mestrado/Data mining/Normal_lessdata/normal_output.csv',
                           names=["XMEAS_1", "XMEAS_2", "XMEAS_3", "XMEAS_4", "XMEAS_5", "XMEAS_6", "XMEAS_7", "XMEAS_8",
                                  "XMEAS_9", "XMEAS_10",
                                  "XMEAS_11", "XMEAS_12", "XMEAS_13", "XMEAS_14", "XMEAS_15", "XMEAS_16", "XMEAS_17",
@@ -26,13 +26,12 @@ normal_data = pd.read_csv('C:/Users/Lais-WHart/Google Drive/UFRGS/Mestrado/Data 
                                  "XMEAS_36", "XMEAS_37",
                                  "XMEAS_38", "XMEAS_39", "XMEAS_40", "XMEAS_41"])
 
-normal_data['normal'] = 1
-normal_data['failure'] = 0
+
 
 list_aux = []
 
 for x in range(24, 696 + 24, 24):
-    df_aux = pd.read_csv('C:/Users/Lais-WHart/Google Drive/UFRGS/Mestrado/Data mining/Failure_1/Fault1_' + str(x) + '.csv',
+    df_aux = pd.read_csv('C:/Users/Lais-WHart/Google Drive/UFRGS/Mestrado/Data mining/Failure/Fault2_' + str(x) + '.csv',
                          names=["XMEAS_1", "XMEAS_2", "XMEAS_3", "XMEAS_4", "XMEAS_5", "XMEAS_6", "XMEAS_7", "XMEAS_8",
                                 "XMEAS_9", "XMEAS_10",
                                 "XMEAS_11", "XMEAS_12", "XMEAS_13", "XMEAS_14", "XMEAS_15", "XMEAS_16", "XMEAS_17",
@@ -48,32 +47,62 @@ for x in range(24, 696 + 24, 24):
 
 Fault1_df = pd.concat(list_aux, ignore_index=True)
 
-Fault1_df['normal'] = 0
-Fault1_df['failure'] = 1
+
+
 
 full_df = normal_data.append(Fault1_df, ignore_index=True)
 
 full_df = full_df.sample(frac=1).reset_index(drop=True)
 
+
+
+pca = decomposition.PCA(n_components=12)
+pca.fit(full_df)
+
+names = []
+
+for j in range(0, pca.n_components):
+    names.insert(len(names), "PC" + str(j))
+
+
+dfnormal= pd.DataFrame(data=pca.transform(normal_data), columns=names)
+dffailure= pd.DataFrame(data=pca.transform(Fault1_df), columns=names)
+
+dffailure['normal'] = 0
+dffailure['failure'] = 1
+dfnormal['normal'] = 1
+dfnormal['failure'] = 0
+
+full_df = dfnormal.append(dffailure, ignore_index=True)
+
+full_df = full_df.sample(frac=1).reset_index(drop=True)
+
+
 # Specify the data
-X = full_df.iloc[:, 0:40].astype(float)
+X = full_df.iloc[:, 0:12].astype(float)
 
 # Specify the target labels and flatten the array
-y = np_utils.to_categorical(full_df.iloc[:, 41:42])
+y = np_utils.to_categorical(full_df.iloc[:, 13:14])
 
 
 def baseline_model():
     # create model
     model = Sequential()
-    model.add(Dense(40, input_dim=40, activation='relu'))
-    model.add(Dense(2, activation='softmax'))
+    model.add(Dense(70, input_dim=12, activation='tanh'))
+    model.add(Dense(40, activation='tanh'))
+    model.add(Dense(15, activation='tanh'))
+    model.add(Dense(2, activation='linear'))
     # Compile model
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
     return model
 
 
-estimator = KerasClassifier(build_fn=baseline_model, epochs=20, batch_size=100, verbose=1)
+estimator = KerasClassifier(build_fn=baseline_model, epochs=20, batch_size=32, verbose=0)
 estimator.fit(np.array(X), np.array(y))
+
+
+#y_pred = estimator.predict(X_test)
+
 
 kfold = KFold(n_splits=10, shuffle=True, random_state=seed)
 

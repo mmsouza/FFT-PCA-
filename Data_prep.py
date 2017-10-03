@@ -2,7 +2,7 @@ import pandas as pd
 
 
 def import_data():
-    normal_data = pd.read_csv('C:/Users/matheus/Desktop/normal_output.csv',
+    normal_data = pd.read_csv('C:/Users/Lais-WHart/Google Drive/UFRGS/Mestrado/Data mining/Normal_lessdata/normal_output.csv',
                               names=["XMEAS_1", "XMEAS_2", "XMEAS_3", "XMEAS_4", "XMEAS_5", "XMEAS_6", "XMEAS_7",
                                      "XMEAS_8", "XMEAS_9", "XMEAS_10",
                                      "XMEAS_11", "XMEAS_12", "XMEAS_13", "XMEAS_14", "XMEAS_15", "XMEAS_16", "XMEAS_17",
@@ -13,15 +13,14 @@ def import_data():
                                      "XMEAS_36", "XMEAS_37",
                                      "XMEAS_38", "XMEAS_39", "XMEAS_40", "XMEAS_41"])
 
-    # normal_Idv = pd.read_csv('C:/Users/matheus/Desktop/normal_idv_output.csv')
-
+    # normal_Idv = pd.read_csv('C:/Users/Lais - WHart/Google Drive/UFRGS/Mestrado/Data mining\Normal/normal_idv_output.csv')
     normal_data['normal'] = 1
     normal_data['failure'] = 0
 
     list_aux = []
 
     for x in range(24, 696 + 24, 24):
-        df_aux = pd.read_csv('C:/Users/matheus/Desktop/Fault_TEP/Fault1_' + str(x) + '.csv',
+        df_aux = pd.read_csv('C:/Users/Lais-WHart/Google Drive/UFRGS/Mestrado/Data mining/Failure/Fault2_' + str(x) + '.csv',
                              names=["XMEAS_1", "XMEAS_2", "XMEAS_3", "XMEAS_4", "XMEAS_5", "XMEAS_6", "XMEAS_7",
                                     "XMEAS_8", "XMEAS_9", "XMEAS_10",
                                     "XMEAS_11", "XMEAS_12", "XMEAS_13", "XMEAS_14", "XMEAS_15", "XMEAS_16", "XMEAS_17",
