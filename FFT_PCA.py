@@ -7,7 +7,7 @@ import Data_prep as dp
 from matplotlib.axes import Axes
 import time
 from sklearn.model_selection import train_test_split
-
+from sklearn.preprocessing import StandardScaler
 import pandas as pd
 from keras.models import Sequential
 from keras.layers import Dense
@@ -93,56 +93,91 @@ if __name__ == "__main__":
 
     # df_fft return the list of all dataframes of features in
     # frequency domain and the concatenated version
-    normal_dfFFT, list_normal_dfFFT = df_fft(normadf, 100)
-    fault_dfFFT, list_fault_dfFFT = df_fft(faultdf, 100)
+
+    tic = time.clock()
+    normal_dfFFT, list_normal_dfFFT = df_fft(normadf,200)
+    fault_dfFFT, list_fault_dfFFT = df_fft(faultdf, 200)
+
 
     full_df = normal_dfFFT.append(fault_dfFFT, ignore_index=True)
-    pca = decomposition.PCA(n_components=1)
+    print(full_df)
+
+    names = []
+
+    for j in range(0, 100):
+        names.insert(len(names), str(j))
+
+
+    scaler = StandardScaler().fit(full_df)
+
+    full_df = pd.DataFrame(data=scaler.transform(full_df), columns=names)
+
+
+    print(full_df)
+    pca = decomposition.PCA(n_components=50)
     pca.fit(full_df)
 
     normal_piv_df= fft_pac_pivoting(list_normal_dfFFT, pca)
-    normal_piv_df['normal'] = 1
-    normal_piv_df['failure'] = 0
+    #    normal_piv_df['normal'] = 1
+ #   normal_piv_df['failure'] = 0
 
     fault_piv_df = fft_pac_pivoting(list_fault_dfFFT, pca)
-    fault_piv_df['normal'] = 0
-    fault_piv_df['failure'] = 1
+    #fault_piv_df['normal'] = 0
+    #fault_piv_df['failure'] = 1
 
-    end = time.time()
-    print("Elapsed Time " + str(end - start))
+    pca2 = decomposition.PCA(n_components=15)
+    fftpca_full_df = normal_piv_df.append(fault_piv_df, ignore_index=True)
+    pca2.fit(fftpca_full_df)
 
-    full_df = normal_piv_df.append(fault_piv_df, ignore_index=True)
+    names = []
+
+    for j in range(0, pca2.n_components):
+        names.insert(len(names), "PC" + str(j))
+
+    fftpca_dfnormal = pd.DataFrame(data=pca2.transform(normal_piv_df), columns=names)
+    fftpca_dffailure = pd.DataFrame(data=pca2.transform(fault_piv_df), columns=names)
+
+    fftpca_dfnormal['normal'] = 1
+    fftpca_dfnormal['failure'] = 0
+    fftpca_dffailure['normal'] = 0
+    fftpca_dffailure['failure'] = 1
+
+
+
+
+
+    full_df = fftpca_dfnormal.append(fftpca_dffailure, ignore_index=True)
     full_df = full_df.sample(frac=1).reset_index(drop=True)
 
-    #X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
-
-    print(full_df.describe())
     # Specify the data
-    X = full_df.iloc[:, 0:40].astype(float)
+    X = full_df.iloc[:, 0:15].astype(float)
 
     # Specify the target labels and flatten the array
-    y = np_utils.to_categorical(full_df.iloc[:, 41:42])
+    y = np_utils.to_categorical(full_df.iloc[:, 16:17])
 
 
     def baseline_model():
         # create model
         model = Sequential()
-        model.add(Dense(40, input_dim=40, activation='relu'))
+        model.add(Dense(70, input_dim=15, activation='tanh'))
+        model.add(Dense(40, activation='tanh'))
+        model.add(Dense(15, activation='tanh'))
         model.add(Dense(2, activation='softmax'))
         # Compile model
         model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
         return model
 
 
-    estimator = KerasClassifier(build_fn=baseline_model, epochs=20, batch_size=32, verbose=1)
+    estimator = KerasClassifier(build_fn=baseline_model, epochs=20, batch_size=3, verbose=1)
     estimator.fit(np.array(X), np.array(y))
 
-    kfold = KFold(n_splits=10, shuffle=True, random_state=seed)
+    kfold = KFold(n_splits=5, shuffle=True, random_state=seed)
 
     results = cross_val_score(estimator, np.array(X), np.array(y), cv=kfold)
     print("Baseline: %.2f%% (%.2f%%)" % (results.mean() * 100, results.std() * 100))
 
-
+    toc = time.clock()
+    print(toc - tic)
 
     # print(data.describe())
 

@@ -39,7 +39,7 @@ def import_data():
     fault1_df['normal'] = 0
     fault1_df['failure'] = 1
 
-    print(fault1_df.describe())
+    #print(fault1_df.describe())
 
     return normal_data, fault1_df
 
