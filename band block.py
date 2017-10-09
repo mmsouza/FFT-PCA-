@@ -1,7 +1,6 @@
 from scipy import signal
 import numpy as np
 import pandas as pd
-
 import matplotlib.pyplot as plt
 
 
@@ -15,7 +14,7 @@ b, a = signal.butter(2,bp_stop_Hz/(fs_Hz / 2.0), 'bandstop')
 w, h = signal.freqz(b,a,1000)
 f = w * fs_Hz / (2*np.pi)
 
-base2 = pd.read_excel("AirQualityUCI.xlsx")
+base2 = pd.read_excel() #load a dataset from excel file
 temperature_24 = base2.loc[0:48, "NOx(GT)"]
 B = temperature_24
 #B=B.append(B)

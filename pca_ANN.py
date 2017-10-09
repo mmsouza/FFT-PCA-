@@ -10,9 +10,9 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn import decomposition
 from sklearn.preprocessing import StandardScaler
-import Data_prep as dp
+import data_prep as dp
 import time
-
+import ann
 
 def baseline_model():
     model = Sequential()
@@ -25,7 +25,7 @@ def baseline_model():
 
 
 # -------------loading data-----------
-normal_data, Fault1_df = dp.import_data('C:/Users/matheus/Google Drive/UFRGS/Mestrado/Data mining/Data/')
+normal_data, Fault1_df = dp.import_data('C:/Users/Lais-WHart/Google Drive/UFRGS/Mestrado/Data mining/Data/')
 
 full_df = normal_data.append(Fault1_df, ignore_index=True)
 scaler = StandardScaler().fit(full_df)  # setup normalizer
@@ -37,14 +37,14 @@ tic = time.clock()  # time counter
 pca = decomposition.PCA(n_components=12)  # setting number of principle components
 pca.fit(full_df)
 
-# ----------------- Applying pca and formatting as pandas dataframe ------------
+# Applying pca and formatting as pandas dataframe
 names = []
 for j in range(0, pca.n_components):
     names.insert(len(names), "PC" + str(j))
 
 dfnormal = pd.DataFrame(data=pca.transform(normal_data), columns=names)
 dffailure = pd.DataFrame(data=pca.transform(Fault1_df), columns=names)
-# ------------------------------------------------------------------------------
+
 
 # Adding dummy data, labels that mark if a given occurrence is normal or a failure
 dffailure['normal'] = 0
@@ -62,7 +62,8 @@ X = full_df.iloc[:, 0:12].astype(float)
 y = np_utils.to_categorical(full_df.iloc[:, 13:14])
 
 # setup classifier
-estimator = KerasClassifier(build_fn=baseline_model(), epochs=20, batch_size=32, verbose=0)
+ann.inputsize=12
+estimator = KerasClassifier(build_fn=ann.baseline_model, epochs=20, batch_size=32, verbose=0)
 estimator.fit(np.array(X), np.array(y))
 
 # setup cross folder validation

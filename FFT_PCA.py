@@ -1,7 +1,7 @@
-import fft
+import fft as fft
 from sklearn import decomposition
 from sklearn.preprocessing import normalize
-import Data_prep as dp
+import data_prep as dp
 import time
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
@@ -13,7 +13,7 @@ from keras.utils import np_utils
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import KFold
 import numpy as np
-
+import ann
 
 def df_fft(data, step):
     # step is the number of observations used to perform fft
@@ -69,16 +69,7 @@ def fft_pac_pivoting(list_dataframes, pca):
     return pd.concat(X, ignore_index=True, axis=1)
 
 
-def baseline_model():
-        # create model
-        model = Sequential()
-        model.add(Dense(70, input_dim=15, activation='tanh'))
-        model.add(Dense(40, activation='tanh'))
-        model.add(Dense(15, activation='tanh'))
-        model.add(Dense(2, activation='softmax'))
-        # Compile model
-        model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-        return model
+
 
 if __name__ == "__main__":
 
@@ -87,7 +78,7 @@ if __name__ == "__main__":
     seed = 7
     np.random.seed(seed)
 
-    normadf, faultdf = dp.import_data('C:/Users/matheus/Google Drive/UFRGS/Mestrado/Data mining/Data/')
+    normadf, faultdf = dp.import_data('C:/Users/Lais-WHart/Google Drive/UFRGS/Mestrado/Data mining/Data/')
 
     # df_fft return the list of all dataframes of features in
     # frequency domain and the concatenated version
@@ -131,8 +122,8 @@ if __name__ == "__main__":
     # Specify the target labels and flatten the array
     y = np_utils.to_categorical(full_df.iloc[:, 16:17])
 
-
-    estimator = KerasClassifier(build_fn=baseline_model, epochs=20, batch_size=3, verbose=1)
+    ann.inputsize=15
+    estimator = KerasClassifier(build_fn=ann.baseline_model, epochs=20, batch_size=3, verbose=1)
 
     estimator.fit(np.array(X), np.array(y))
 
@@ -143,3 +134,4 @@ if __name__ == "__main__":
 
     toc = time.clock()
     print(toc - tic)
+
