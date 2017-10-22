@@ -75,8 +75,7 @@ if __name__ == "__main__":
 
     start = time.time()
 
-    seed = 7
-    np.random.seed(seed)
+
 
     normadf, faultdf = dp.import_data('C:/Users/Lais-WHart/Google Drive/UFRGS/Mestrado/Data mining/Data/')
 
@@ -127,7 +126,10 @@ if __name__ == "__main__":
 
     estimator.fit(np.array(X), np.array(y))
 
-    kfold = KFold(n_splits=5, shuffle=True, random_state=seed)
+    #seed = 7
+    #np.random.seed(seed)
+    np.random.seed()
+    kfold = KFold(n_splits=5, shuffle=True, random_state=np.random)
 
     results = cross_val_score(estimator, np.array(X), np.array(y), cv=kfold)
     print("Baseline: %.2f%% (%.2f%%)" % (results.mean() * 100, results.std() * 100))
