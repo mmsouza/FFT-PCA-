@@ -10,6 +10,7 @@ def shallow_ann():
     model.add(Dense(40, input_dim=inputsize, activation='relu'))
     model.add(Dense(2, activation='softmax'))
     # Compile model
+
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
     return model
 

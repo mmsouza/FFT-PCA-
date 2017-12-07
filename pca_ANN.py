@@ -60,18 +60,20 @@ full_df = full_df.sample(frac=1).reset_index(drop=True)
 X = full_df.iloc[:, 0:12].astype(float)
 # Specify the target labels and flatten the array
 y = np_utils.to_categorical(full_df.iloc[:, 13:14])
-
+#y=full_df['failure']
 # setup classifier
 ann.inputsize=12
-estimator = KerasClassifier(build_fn=ann.baseline_model, epochs=20, batch_size=32, verbose=0)
+estimator = KerasClassifier(build_fn=ann.baseline_model, epochs=20, batch_size=200, verbose=0)
 estimator.fit(np.array(X), np.array(y))
 
 # setup cross folder validation
 seed = 7
 np.random.seed(seed)
 kfold = KFold(n_splits=10, shuffle=True, random_state=seed)
-results = cross_val_score(estimator, np.array(X), np.array(y), cv=kfold)
-print("Baseline: %.2f%% (%.2f%%)" % (results.mean() * 100, results.std() * 100))
+#results = cross_val_score(estimator, np.array(X), np.array(y), cv=kfold)
+results = cross_val_score(estimator, np.array(X), np.array(y), cv=kfold, scoring= 'precision' )
+print(results)
+#print("Baseline: %.2f%% (%.2f%%)" % (results.mean() * 100, results.std() * 100))
 
 # print elapsed time
 toc = time.clock()

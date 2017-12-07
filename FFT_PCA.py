@@ -14,6 +14,8 @@ from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import KFold
 import numpy as np
 import ann
+import sklearn.metrics as metrics
+from sklearn.metrics import make_scorer
 
 def df_fft(data, step):
     # step is the number of observations used to perform fft
@@ -120,19 +122,24 @@ if __name__ == "__main__":
     X = full_df.iloc[:, 0:15].astype(float)
     # Specify the target labels and flatten the array
     y = np_utils.to_categorical(full_df.iloc[:, 16:17])
-
+    #y=full_df['failure']
     ann.inputsize=15
     estimator = KerasClassifier(build_fn=ann.baseline_model, epochs=20, batch_size=3, verbose=1)
 
     estimator.fit(np.array(X), np.array(y))
 
-    #seed = 7
-    #np.random.seed(seed)
-    np.random.seed()
+    seed = 7
+    np.random.seed(seed)
+    #np.random.seed()
     kfold = KFold(n_splits=5, shuffle=True, random_state=np.random)
 
-    results = cross_val_score(estimator, np.array(X), np.array(y), cv=kfold)
-    print("Baseline: %.2f%% (%.2f%%)" % (results.mean() * 100, results.std() * 100))
+
+
+
+    results = cross_val_score(estimator, np.array(X), np.array(y), cv=kfold, scoring= make_scorer(metrics.precision_recall_fscore_support) )
+    print(results)
+
+    #print("Baseline: %.2f%% (%.2f%%)" % (results.mean() * 100, results.std() * 100))
 
     toc = time.clock()
     print(toc - tic)
