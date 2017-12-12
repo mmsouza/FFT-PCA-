@@ -6,19 +6,13 @@ import time
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 import pandas as pd
-from keras.models import Sequential
-from keras.layers import Dense
 from keras.wrappers.scikit_learn import KerasClassifier
-from keras.utils import np_utils
-from sklearn.model_selection import cross_val_score
-from sklearn.model_selection import KFold
 import numpy as np
 import ann
 import sklearn.metrics as metrics
-from sklearn.metrics import make_scorer
 from sklearn.metrics import confusion_matrix
 import matplotlib.pyplot as plt
-import itertools
+import Confusion_matrix as CFM
 
 
 def df_fft(data, step):
@@ -54,7 +48,6 @@ def df_fft(data, step):
     dftotal = pd.concat(list_aux, ignore_index=True)
     return dftotal, list_aux
 
-
 def fft_pac_pivoting(list_dataframes, pca):
     print(len(list_dataframes))
     print(len(list_dataframes[1].columns))
@@ -74,50 +67,22 @@ def fft_pac_pivoting(list_dataframes, pca):
 
     return pd.concat(X, ignore_index=True, axis=1)
 
-def plot_confusion_matrix(cm, classes,
-                          normalize=False,
-                          title='Confusion matrix',
-                          cmap=plt.cm.Blues):
-    """
-    This function prints and plots the confusion matrix.
-    Normalization can be applied by setting `normalize=True`.
-    """
-    if normalize:
-        cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
-        print("Normalized confusion matrix")
-    else:
-        print('Confusion matrix, without normalization')
 
-    print(cm)
-
-    plt.imshow(cm, interpolation='nearest', cmap=cmap)
-    plt.title(title)
-    plt.colorbar()
-    tick_marks = np.arange(len(classes))
-    plt.xticks(tick_marks, classes, rotation=45)
-    plt.yticks(tick_marks, classes)
-
-    fmt = '.2f' if normalize else 'd'
-    thresh = cm.max() / 2.
-    for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
-        plt.text(j, i, format(cm[i, j], fmt),
-                 horizontalalignment="center",
-                 color="white" if cm[i, j] > thresh else "black")
-
-    plt.tight_layout()
-    plt.ylabel('True label')
-    plt.xlabel('Predicted label')
-
-
-
-if __name__ == "__main__":
+def pca_fft_ann():
+#if __name__ == "__main__":
 
     start = time.time()
+    fault_list=[]
 
+    for i in range(1, 20):
+        fault_list.insert(len(fault_list),dp.import_data('C:/Users/Lais-WHart/Google Drive/UFRGS/Mestrado/Data mining/full2/', 'Fault_','base_mode', i, 24, 696))
+        print(i)
 
+    faultdf = pd.concat(fault_list, ignore_index=True)
+    #print(faultdf)
+    normadf = dp.import_data('C:/Users/Lais-WHart/Google Drive/UFRGS/Mestrado/Data mining/full2/', 'Normal',
+                             'base_mode', 0, 24, 14352)
 
-    faultdf = dp.import_data('C:/Users/Lais-WHart/Google Drive/UFRGS/Mestrado/Data mining/full2/','Fault_','base_mode',3,24,696)
-    normadf=dp.import_data('C:/Users/Lais-WHart/Google Drive/UFRGS/Mestrado/Data mining/full2/','Normal','base_mode',0,24,696)
 
     # df_fft return the list of all dataframes of features in
     # frequency domain and the concatenated version
@@ -126,19 +91,18 @@ if __name__ == "__main__":
     fault_dfFFT, list_fault_dfFFT = df_fft(faultdf, 200)
 
     full_df = normal_dfFFT.append(fault_dfFFT, ignore_index=True)
-
-
+    ncomp=52
     names = []
     for j in range(0, 100):
         names.insert(len(names), str(j))
     scaler = StandardScaler().fit(full_df)
     full_df = pd.DataFrame(data=scaler.transform(full_df), columns=names)
-    pca = decomposition.PCA(n_components=50)
+    pca = decomposition.PCA(n_components=100)
     pca.fit(full_df)
     normal_piv_df = fft_pac_pivoting(list_normal_dfFFT, pca)
     fault_piv_df = fft_pac_pivoting(list_fault_dfFFT, pca)
-#---------------
-    pca2 = decomposition.PCA(n_components=15)
+    # ---------------
+    pca2 = decomposition.PCA(n_components=ncomp)
     fftpca_full_df = normal_piv_df.append(fault_piv_df, ignore_index=True)
     pca2.fit(fftpca_full_df)
     names = []
@@ -147,60 +111,43 @@ if __name__ == "__main__":
     fftpca_dfnormal = pd.DataFrame(data=pca2.transform(normal_piv_df), columns=names)
     fftpca_dffailure = pd.DataFrame(data=pca2.transform(fault_piv_df), columns=names)
 
-# ---------------
-    fftpca_dfnormal['normal'] = 1
+    # ---------------
+
     fftpca_dfnormal['failure'] = 0
-    fftpca_dffailure['normal'] = 0
     fftpca_dffailure['failure'] = 1
-
-
 
     full_df = fftpca_dfnormal.append(fftpca_dffailure, ignore_index=True)
     full_df = full_df.sample(frac=1).reset_index(drop=True)
 
-
-
     # Specify the data
-    X = full_df.iloc[:, 0:15].astype(float)
+    X = full_df.iloc[:, 0:ncomp].astype(float)
     # Specify the target labels and flatten the array
-    y = np_utils.to_categorical(full_df.iloc[:, 16:17])
+    #y = np_utils.to_categorical(full_df['failure'])
 
+    y=full_df['failure']
+    ann.inputsize = ncomp
+    estimator = KerasClassifier(build_fn=ann.bin_baseline_model, epochs=20, batch_size=5, verbose=1)
+    print(len(X))
 
-    #y=full_df['failure']
-    ann.inputsize=15
-    estimator = KerasClassifier(build_fn=ann.baseline_model, epochs=20, batch_size=32, verbose=1)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
+    X_train, X_test, y_train, y_test = train_test_split(np.array(X), np.array(y), test_size=0.20, shuffle=True)
     estimator.fit(np.array(X_train), np.array(y_train))
-    ypred = estimator.predict(np.array(X_test))
+    ypred=estimator.predict(np.array(X_test))
 
-    cnf_matrix = confusion_matrix(y_test, ypred)
+    cnf_matrix = confusion_matrix(y_test,ypred)
 
+    print("\n Acurácia  " + str(metrics.accuracy_score(y_test, ypred)))
     # Plot non-normalized confusion matrix
 
-    plot_confusion_matrix(cnf_matrix, classes=['true', 'false'],
-                          title='Confusion matrix, without normalization')
-
-    #plt.show()
+    CFM.plot_confusion_matrix(cnf_matrix, classes=['Normal','Falha'],title= " Matriz de Confusão FFT_PCA_ANN")
+    plt.savefig('FFT_PCA', bbox_inches='tight')
+    plt.figure()
+    CFM.plot_confusion_matrix(cnf_matrix, classes=['Normal', 'Falha'], title=" Matriz de Confusão FFT_PCA_AN ", normalize= True)
+    plt.savefig('FFT_PCA_Norm', bbox_inches='tight')
+    plt.show()
 
     print(cnf_matrix)
 
 
-
-
-
-    #estimator.fit(np.array(X), np.array(y))
-
-
-
-
-    #seed = 7
-    #np.random.seed(seed)
-    #np.random.seed()
-    #kfold = KFold(n_splits=5, shuffle=True, random_state=np.random)
-    #results = cross_val_score(estimator, np.array(X), np.array(y), cv=kfold, scoring= make_scorer(metrics.precision_recall_fscore_support) )
-    #print(results)
-
-   # print("Baseline: %.2f%% (%.2f%%)" % (results.mean() * 100, results.std() * 100))
 
     toc = time.clock()
     print(toc - tic)

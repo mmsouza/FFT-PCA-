@@ -1,54 +1,78 @@
-import pandas as pd
-from sklearn.metrics import confusion_matrix, precision_score, recall_score, f1_score, cohen_kappa_score
-import pandas as pd
-from keras.wrappers.scikit_learn import KerasClassifier
-from keras.utils import np_utils
-from sklearn.model_selection import cross_val_score
-from sklearn.model_selection import KFold
-from sklearn.pipeline import Pipeline
-import numpy as np
-from sklearn.model_selection import train_test_split
-from keras.models import Sequential
-from keras.layers import Dense
 import data_prep as dp
 import time
+from sklearn.model_selection import train_test_split
+import pandas as pd
+from keras.wrappers.scikit_learn import KerasClassifier
+import numpy as np
 import ann
+import sklearn.metrics as metrics
+from sklearn.metrics import confusion_matrix
+import matplotlib.pyplot as plt
+import Confusion_matrix as CFM
 
 
 
 
-normal_data, Fault1_df = dp.import_data('C:/Users/Lais-WHart/Google Drive/UFRGS/Mestrado/Data mining/Data/')
 
-tic = time.clock()  # time counter
-normal_data['normal'] = 1
-normal_data['failure'] = 0
-Fault1_df['normal'] = 0
-Fault1_df['failure'] = 1
+def ANN():
+#if __name__ == "__main__":
+    ncomp = 52
+    fault_list=[]
+
+    for i in range(1, 20):
+        fault_list.insert(len(fault_list),dp.import_data('C:/Users/Lais-WHart/Google Drive/UFRGS/Mestrado/Data mining/full2/', 'Fault_','base_mode', i, 24, 696))
+        print(i)
+
+        Fault1_df = pd.concat(fault_list, ignore_index=True)
+
+    normal_data = dp.import_data('C:/Users/Lais-WHart/Google Drive/UFRGS/Mestrado/Data mining/full2/', 'Normal',
+                                 'base_mode', 0, 24, 14352)
+
+    tic = time.clock()  # time counter
+
+    normal_data['failure'] = 0.0
+    Fault1_df['failure'] = 1.0
 
 
 
-full_df = normal_data.append(Fault1_df, ignore_index=True)
+    full_df = normal_data.append(Fault1_df, ignore_index=True)
+    #full_df =Fault1_df
+    #full_df = full_df.sample(frac=1).reset_index(drop=True)
 
-full_df = full_df.sample(frac=1).reset_index(drop=True)
+    # Specify the data
+    X = full_df.iloc[:, 0:ncomp].astype(float)
 
-# Specify the data
-X = full_df.iloc[:, 0:40].astype(float)
-
-# Specify the target labels and flatten the array
-y = np_utils.to_categorical(full_df.iloc[:, 41:42])
+    # Specify the target labels and flatten the array
+    y = full_df['failure']
 
 
-ann.inputsize=40
-estimator = KerasClassifier(build_fn=ann.baseline_model, epochs=20, batch_size=100, verbose=1)
-estimator.fit(np.array(X), np.array(y))
+    ann.inputsize=ncomp
+    estimator = KerasClassifier(build_fn=ann.bin_baseline_model, epochs=20, batch_size=32, verbose=1)
+    X_train, X_test, y_train, y_test = train_test_split(np.array(X), np.array(y), test_size=0.20, shuffle=True)
 
-seed = 7
-np.random.seed(seed)
-kfold = KFold(n_splits=10, shuffle=True, random_state=seed)
+    #print(y_test.describe())
 
-results = cross_val_score(estimator, np.array(X), np.array(y), cv=kfold)
-print("Rusults: %.2f%% (%.2f%%)" % (results.mean() * 100, results.std() * 100))
 
-# print elapsed time
-toc = time.clock()
-print(toc - tic)
+    estimator.fit(np.array(X_train), np.array(y_train))
+
+    ypred=estimator.predict(np.array(X_test))
+
+    print(pd.DataFrame(data=ypred).describe())
+    cnf_matrix = confusion_matrix(y_test,ypred)
+
+    print("\n Acurácia  " + str(metrics.accuracy_score(y_test, ypred)))
+    # Plot non-normalized confusion matrix
+
+    CFM.plot_confusion_matrix(cnf_matrix, classes=['Normal', 'Falha'], title=" Matriz de Confusão ANN ")
+    plt.savefig('ANN', bbox_inches='tight')
+    plt.figure()
+    CFM.plot_confusion_matrix(cnf_matrix, classes=['Normal', 'Falha'], title=" Matriz de Confusão ANN", normalize=True)
+    plt.savefig('ANN_Norm', bbox_inches='tight')
+    plt.show()
+
+    #plt.show()
+
+    print(cnf_matrix)
+    # print elapsed time
+    toc = time.clock()
+    print(toc - tic)

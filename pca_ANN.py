@@ -19,7 +19,7 @@ def baseline_model():
     model.add(Dense(70, input_dim=12, activation='tanh'))
     model.add(Dense(40, activation='tanh'))
     model.add(Dense(15, activation='tanh'))
-    model.add(Dense(2, activation='softmax'))
+    model.add(Dense(2, activation='sigmoid'))
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
     return model
 
