@@ -83,7 +83,7 @@ def pca_ann():
     plt.figure()
     CFM.plot_confusion_matrix(cnf_matrix, classes=['Normal', 'Falha'], title=" Matriz de Confusão PCA-ANN", normalize=True)
     plt.savefig('PCA-ANN_Norm', bbox_inches='tight')
-    plt.show()
+    #plt.show()
 
     #plt.show()
 

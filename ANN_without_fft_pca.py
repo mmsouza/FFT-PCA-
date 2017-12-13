@@ -68,7 +68,7 @@ def ANN():
     plt.figure()
     CFM.plot_confusion_matrix(cnf_matrix, classes=['Normal', 'Falha'], title=" Matriz de Confusão ANN", normalize=True)
     plt.savefig('ANN_Norm', bbox_inches='tight')
-    plt.show()
+    #plt.show()
 
     #plt.show()
 
