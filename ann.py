@@ -25,6 +25,7 @@ def baseline_model():
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
     return model
 
+
 def bin_shallow_ann():
     # create model
     model = Sequential()
@@ -40,8 +41,8 @@ def bin_baseline_model():
     model = Sequential()
     model.add(Dense(70, kernel_initializer='normal', input_dim=inputsize, activation='relu'))
     model.add(Dense(40, kernel_initializer='normal', activation='relu'))
-    model.add(Dense(15,kernel_initializer='normal', activation='relu'))
-    model.add(Dense(1,kernel_initializer='normal', activation='sigmoid'))
-    adam=Adam(lr=0.0001, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
-    model.compile(loss='binary_crossentropy',optimizer=adam, metrics=['accuracy'])
+    model.add(Dense(15, kernel_initializer='normal', activation='relu'))
+    model.add(Dense(1, kernel_initializer='normal', activation='sigmoid'))
+    adam = Adam(lr=0.0001, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
+    model.compile(loss='binary_crossentropy', optimizer=adam, metrics=['accuracy'])
     return model

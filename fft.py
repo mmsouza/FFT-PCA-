@@ -20,7 +20,6 @@ def hf_fft(data):
 
 
 def plot_fft(xf, yff, name, method='plot', save=False):
-
     p = plt.figure()
     p.canvas.set_window_title(name)
 
