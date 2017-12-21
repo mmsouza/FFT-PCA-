@@ -1,12 +1,8 @@
 import data_prep as dp
 import time
-from sklearn.model_selection import train_test_split
-
-from keras.wrappers.scikit_learn import KerasClassifier
-import numpy as np
 import ann
-from sklearn.metrics import confusion_matrix
 import pre_fft_pca
+from keras.wrappers.scikit_learn import KerasClassifier
 
 
 
@@ -14,8 +10,7 @@ import pre_fft_pca
 def pca_fft_ann(n_modes=1, fault_prop=.5, pcs=5200, repetitions=1, filename='FFT-PCA-ANN', batchsize=32):
     normadf, faultdf = dp.load_df(n_modes, fault_prop)
 
-    file = open(filename + '.csv', 'a')
-    file.write('#test;n_modes;pre_proc_time;trainig_time;fault_prop;pcs;precision;recall;f1;tp;fp;tn;fn \n')
+
 
     pre_process_init = time.time()
 
@@ -28,10 +23,10 @@ def pca_fft_ann(n_modes=1, fault_prop=.5, pcs=5200, repetitions=1, filename='FFT
 
     ann.inputsize = pcs
     estimator = KerasClassifier(build_fn=ann.bin_baseline_model, epochs=20, batch_size=batchsize, verbose=1)
-    dp.validation(X, y ,estimator,repetitions,n_modes,pre_proc_time,fault_prop,pcs,file)
+    dp.validation(X,y,estimator,repetitions,n_modes,pre_proc_time,fault_prop,filename,pcs=pcs,batchsize=batchsize)
 
     # ---------------------------------------------------------------------------------------------------------------------------------
-    file.close()
+
 
 
 # ---------------------------------------------------------------------------------------------------------------------------------

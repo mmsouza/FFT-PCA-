@@ -1,12 +1,12 @@
 import fft as fft
-from sklearn.preprocessing import normalize
 import data_prep as dp
 import time
 import pandas as pd
 import matplotlib.pyplot as plt
 import pre_fft_pca
-
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.preprocessing import normalize
+
 
 
 def df_fft(data, step):
@@ -66,8 +66,6 @@ def fft_pac_pivoting(list_dataframes, pca):
 def pca_fft_knn(n_modes=1, fault_prop=.5, pcs=5200, repetitions=1, filename='FFT-PCA-KNN',  neighbors=5):
     normadf, faultdf = dp.load_df(n_modes, fault_prop)
 
-    file = open(filename + '.csv', 'a')
-    file.write('#test;n_modes;pre_proc_time;trainig_time;fault_prop;pcs;precision;recall;f1;tp;fp;tn;fn \n')
 
     pre_process_init = time.time()
 
@@ -78,8 +76,7 @@ def pca_fft_knn(n_modes=1, fault_prop=.5, pcs=5200, repetitions=1, filename='FFT
 
     # ---------------------------------------------------------------------------------------------------------------------------------
     estimator = KNeighborsClassifier(n_neighbors=neighbors)
-    dp.validation(X, y, estimator, repetitions, n_modes, pre_proc_time, fault_prop, pcs, file)
-    file.close()
+    dp.validation(X, y, estimator, repetitions, n_modes, pre_proc_time, fault_prop,filename,pcs=pcs,n_neghbors=neighbors)
 
 
 # ---------------------------------------------------------------------------------------------------------------------------------

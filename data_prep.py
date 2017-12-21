@@ -83,7 +83,12 @@ def load_df(n_modes, fault_proportion):
     return normal_data, fault1_df
 
 
-def validation(X, y, estimator, repetitions, n_modes, pre_proc_time, fault_prop, pcs, file):
+def validation(X, y, estimator, repetitions, n_modes, pre_proc_time, fault_prop, filename,pcs=-1, batchsize=-1,
+               n_neghbors=-1):
+    file = open(filename + '.csv', 'a')
+    file.write(
+        '#test;n_modes;pre_proc_time;trainig_time;fault_prop;pcs;precision;recall;f1;tp;fp;tn;fn;batchsize;n_neghbors \n')
+
     for j in range(1, repetitions + 1):
         process_init = time.time()
 
@@ -108,7 +113,10 @@ def validation(X, y, estimator, repetitions, n_modes, pre_proc_time, fault_prop,
         # test;n_modes;pre_proc_time;trainig_time;fault_prop;pcs;precision;recall;f1;tp;fp;tn;fn \n
         file.write(str(j) + ';' + str(n_modes) + ';' + str(round(pre_proc_time / 60, 2)) + ';' + str(
             round(process_time / 60, 2)) + ';' + str(fault_prop) + ';' + str(pcs) + ';' + str(precision) + ';' + str(
-            recall) + ';' + str(f1) + ';' + str(tp) + ';' + str(fp) + ';' + str(tn) + ';' + str(fn) + '\n')
+            recall) + ';' + str(f1) + ';' + str(tp) + ';' + str(fp) + ';' + str(tn) + ';' + str(fn) + ';' + str(
+            batchsize) + ';' + str(n_neghbors) + '\n')
+
+    file.close()
 
 
 if __name__ == "__main__":

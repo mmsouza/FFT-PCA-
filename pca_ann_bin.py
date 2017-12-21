@@ -1,13 +1,12 @@
-from keras.wrappers.scikit_learn import KerasClassifier
 import data_prep as dp
 import time
 import ann
 import pca
+from keras.wrappers.scikit_learn import KerasClassifier
 
 
 def pca_ann(n_modes=1, fault_prop=.5, pcs=52, repetitions=1, filename='PCA-ANN', batchsize=32):
-    file = open(filename + '.csv', 'a')
-    file.write('#test;n_modes;pre_proc_time;trainig_time;fault_prop;pcs;precision;recall;f1;tp;fp;tn;fn \n')
+
 
     normal_data, fault1_df = dp.load_df(n_modes, fault_prop)
     pre_process_init = time.time()
@@ -23,9 +22,8 @@ def pca_ann(n_modes=1, fault_prop=.5, pcs=52, repetitions=1, filename='PCA-ANN',
     # setup classifier
     ann.inputsize = pcs
     estimator = KerasClassifier(build_fn=ann.bin_baseline_model, epochs=20, batch_size=batchsize, verbose=1)
-    dp.validation(X, y, estimator, repetitions, n_modes, pre_proc_time, fault_prop, pcs, file)
+    dp.validation(X, y, estimator, repetitions, n_modes, pre_proc_time, fault_prop, filename, pcs=pcs, batchsize=batchsize)
 
-    file.close()
 
 
 if __name__ == "__main__":
