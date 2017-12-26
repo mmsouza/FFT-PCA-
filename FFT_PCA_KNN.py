@@ -64,6 +64,7 @@ def fft_pac_pivoting(list_dataframes, pca):
 
 
 def pca_fft_knn(n_modes=1, fault_prop=.5, pcs=5200, repetitions=1, filename='FFT-PCA-KNN',  neighbors=5):
+
     normadf, faultdf = dp.load_df(n_modes, fault_prop)
 
 

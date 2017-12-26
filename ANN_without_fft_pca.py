@@ -4,8 +4,7 @@ from keras.wrappers.scikit_learn import KerasClassifier
 import ann
 
 
-def ANN(n_modes=1, fault_prop=.5, pcs=52, repetitions=1, filename='ANN', batchsize=32):
-
+def ann_run(n_modes=1, fault_prop=.5, pcs=52, repetitions=1, filename='ANN', batchsize=32):
     normadf, faultdf = dp.load_df(n_modes, fault_prop)
 
     # Adding dummy data, labels that mark if a given occurrence is normal or a failure
@@ -22,12 +21,10 @@ def ANN(n_modes=1, fault_prop=.5, pcs=52, repetitions=1, filename='ANN', batchsi
     # y = np_utils.to_categorical(full_df.iloc[:, 13:14])
     y = full_df['failure']
 
+    # capture pre-process time
     pre_process_finish = time.time()
     pre_proc_time = pre_process_finish - pre_process_init
 
-
-
-    ann.inputsize = pcs
-    estimator = KerasClassifier(build_fn=ann.bin_baseline_model, epochs=20, batch_size=batchsize, verbose=1)
-    dp.validation(X, y, estimator, repetitions, n_modes, pre_proc_time, fault_prop,filename , batchsize=batchsize)
-
+    ann.inputsize = pcs  # set input_size as the number of principle components
+    estimator = KerasClassifier(build_fn=ann.bin_baseline_model, epochs=20, batch_size=batchsize, verbose=0)
+    dp.validation(X, y, estimator, repetitions, n_modes, pre_proc_time, fault_prop, filename, batchsize=batchsize)

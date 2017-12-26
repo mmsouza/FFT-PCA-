@@ -21,7 +21,7 @@ def pca_ann(n_modes=1, fault_prop=.5, pcs=52, repetitions=1, filename='PCA-ANN',
 
     # setup classifier
     ann.inputsize = pcs
-    estimator = KerasClassifier(build_fn=ann.bin_baseline_model, epochs=20, batch_size=batchsize, verbose=1)
+    estimator = KerasClassifier(build_fn=ann.bin_baseline_model, epochs=20, batch_size=batchsize, verbose=0)
     dp.validation(X, y, estimator, repetitions, n_modes, pre_proc_time, fault_prop, filename, pcs=pcs, batchsize=batchsize)
 
 

@@ -86,8 +86,7 @@ def load_df(n_modes, fault_proportion):
 def validation(X, y, estimator, repetitions, n_modes, pre_proc_time, fault_prop, filename,pcs=-1, batchsize=-1,
                n_neghbors=-1):
     file = open(filename + '.csv', 'a')
-    file.write(
-        '#test;n_modes;pre_proc_time;trainig_time;fault_prop;pcs;precision;recall;f1;tp;fp;tn;fn;batchsize;n_neghbors \n')
+    file.write('#test;n_modes;pre_proc_time;trainig_time;fault_prop;pcs;precision;recall;f1;tp;fp;tn;fn;batchsize;n_neghbors \n')
 
     for j in range(1, repetitions + 1):
         process_init = time.time()
@@ -106,8 +105,17 @@ def validation(X, y, estimator, repetitions, n_modes, pre_proc_time, fault_prop,
         tn = np.array(cnf_matrix).item((0, 0))
         fn = np.array(cnf_matrix).item((1, 0))
 
-        precision = tp / (tp + fp)
-        recall = tp / (tp + fn)
+        if((tp+fp)==0):
+            precision = -1
+        else:
+            precision = tp / (tp + fp)
+
+        if ((tp + fn) == 0):
+            recall = -1
+        else:
+            recall = tp / (tp + fn)
+
+
         f1 = 2 * ((precision * recall) / (precision + recall))
 
         # test;n_modes;pre_proc_time;trainig_time;fault_prop;pcs;precision;recall;f1;tp;fp;tn;fn \n

@@ -3,12 +3,9 @@ import time
 from sklearn.neighbors import KNeighborsClassifier
 
 
-def pca_KNN(n_modes=1, fault_prop=.5, repetitions=1, filename='KNN',neighbors=5):
+def run_KNN(n_modes=1, fault_prop=.5, repetitions=1, filename='KNN',neighbors=5):
 
     normadf, faultdf = dp.load_df(n_modes, fault_prop)
-
-
-
 
     # Adding dummy data, labels that mark if a given occurrence is normal or a failure
     pre_process_init = time.time()
