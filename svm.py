@@ -1,9 +1,9 @@
 import data_prep as dp
 import time
-from sklearn.neighbors import KNeighborsClassifier
+from sklearn import svm
 
 
-def run_KNN(n_modes=1, fault_prop=.5, repetitions=1, filename='KNN',neighbors=5):
+def run_svm(n_modes=1, fault_prop=.5, repetitions=1, filename='svm_'):
 
     normadf, faultdf = dp.load_df(n_modes, fault_prop)
 
@@ -25,9 +25,9 @@ def run_KNN(n_modes=1, fault_prop=.5, repetitions=1, filename='KNN',neighbors=5)
     pre_proc_time = pre_process_finish - pre_process_init
 
 
-   # setup classifier
-    estimator = KNeighborsClassifier(n_neighbors=neighbors)
-    dp.validation(X, y, estimator, repetitions, n_modes, pre_proc_time, fault_prop,filename,n_neghbors=neighbors)
+    #setup classifier
+    estimator = svm.SVC()
+    dp.validation(X, y, estimator, repetitions, n_modes, pre_proc_time, fault_prop,filename)
 
 
 
