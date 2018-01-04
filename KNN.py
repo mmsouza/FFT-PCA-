@@ -33,5 +33,5 @@ def run_KNN(n_modes=1, fault_prop=.5, repetitions=1, filename='KNN',neighbors=5)
 
 
 if __name__ == "__main__":
-    #pca_KNN()
+    run_KNN()
 
