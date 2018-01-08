@@ -27,7 +27,7 @@ def run_svm(n_modes=1, fault_prop=.5, repetitions=1, filename='svm_'):
 
     #setup classifier
     estimator = svm.SVC()
-    dp.validation(X, y, estimator, repetitions, n_modes, pre_proc_time, fault_prop,filename)
+    dp.validation(X, y, estimator, repetitions, n_modes, pre_proc_time,fault_prop,filename)
 
 
 
