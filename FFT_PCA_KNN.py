@@ -82,8 +82,8 @@ def pca_fft_knn(n_modes=1, fault_prop=.5, pcs=5200, repetitions=1, filename='FFT
 
 # ---------------------------------------------------------------------------------------------------------------------------------
 
-pca_fft_knn()
-plt.show()
+#pca_fft_knn()
+#plt.show()
 
 
 # plt.plot(np.cumsum(pca2.explained_variance_ratio_))

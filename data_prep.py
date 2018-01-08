@@ -2,10 +2,8 @@ import pandas as pd
 from sklearn.metrics import confusion_matrix
 import time
 from sklearn.model_selection import train_test_split
-from keras.wrappers.scikit_learn import KerasClassifier
-from sklearn.neighbors import KNeighborsClassifier
 import numpy as np
-
+from sklearn.model_selection import cross_val_score
 colNames = ["Xmv_1", "Xmv_2", "Xmv_3", "Xmv_4", "Xmv_5", "Xmv_6", "Xmv_7", "Xmv_8", "Xmv_9", "Xmv_10", "Xmv_11",
             "Xmv_12", "XMEAS_1", "XMEAS_2", "XMEAS_3", "XMEAS_4", "XMEAS_5", "XMEAS_6", "XMEAS_7",
             "XMEAS_8", "XMEAS_9", "XMEAS_10",
@@ -49,7 +47,7 @@ def load_df(n_modes, fault_proportion):
                                   import_file('C:/Users/Lais-WHart/Google Drive/UFRGS/Mestrado/Data mining/full2/',
                                               'Fault_',
                                               'mode_' + str(j), i, 24, 696))
-                print(j)
+                #print(j)
 
                 # print(faultdf)
 
@@ -63,7 +61,7 @@ def load_df(n_modes, fault_proportion):
                                import_file('C:/Users/Lais-WHart/Google Drive/UFRGS/Mestrado/Data mining/full2/',
                                            'Normal',
                                            'mode_' + str(j), 0, 24, 6528))  # 6528 value for fault and normal balance
-            print(j)
+            #print(j)
 
     normal_data = pd.concat(normal_list, ignore_index=True)
     fault1_df = pd.concat(fault_list, ignore_index=True)
@@ -73,12 +71,12 @@ def load_df(n_modes, fault_proportion):
 
     if fault_proportion > .5:
         new_normal_lengh = int(((1 - fault_proportion) * len(fault1_df)) / fault_proportion)
-        print(new_normal_lengh)
+        #print(new_normal_lengh)
         normal_data = normal_data[0: new_normal_lengh]
     if fault_proportion < .5:
         new_fault_lengh = int((fault_proportion * len(normal_data)) / (1 - fault_proportion))
         fault1_df = fault1_df[0:new_fault_lengh]
-        print(new_fault_lengh)
+        #print(new_fault_lengh)
 
     return normal_data, fault1_df
 
@@ -87,8 +85,9 @@ def validation(X, y, estimator, repetitions, n_modes, pre_proc_time, fault_prop,
                n_neghbors=-1):
     file = open(filename + '.csv', 'a')
     file.write('#test;n_modes;pre_proc_time;trainig_time;fault_prop;pcs;precision;recall;f1;tp;fp;tn;fn;batchsize;n_neghbors \n')
-
+    file.close()
     for j in range(1, repetitions + 1):
+        file = open(filename + '.csv', 'a')
         process_init = time.time()
 
         x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.20, shuffle=True)
@@ -118,13 +117,18 @@ def validation(X, y, estimator, repetitions, n_modes, pre_proc_time, fault_prop,
 
         f1 = 2 * ((precision * recall) / (precision + recall))
 
-        # test;n_modes;pre_proc_time;trainig_time;fault_prop;pcs;precision;recall;f1;tp;fp;tn;fn \n
-        file.write(str(j) + ';' + str(n_modes) + ';' + str(round(pre_proc_time / 60, 2)) + ';' + str(
-            round(process_time / 60, 2)) + ';' + str(fault_prop) + ';' + str(pcs) + ';' + str(precision) + ';' + str(
-            recall) + ';' + str(f1) + ';' + str(tp) + ';' + str(fp) + ';' + str(tn) + ';' + str(fn) + ';' + str(
-            batchsize) + ';' + str(n_neghbors) + '\n')
 
-    file.close()
+        # test;n_modes;pre_proc_time;trainig_time;fault_prop;pcs;precision;recall;f1;tp;fp;tn;fn \n
+        file.write(
+            '{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};{11};{12};{13};{14};{15};{16}\n'.format(str(j), str(n_modes),
+                                                                                                  str(round(
+                                                                                                      pre_proc_time / 60,
+                                                                                                      2)), str(
+                    round(process_time / 60, 2)), str(fault_prop), str(pcs), str(precision), str(
+                    recall), str(f1), str(tp), str(fp), str(tn), str(fn), str(
+                    batchsize), str(n_neghbors), str(scores.mean()), str(scores.std() * 2)))
+        print(filename + ' validation-' +str(j) +'fineshed')
+        file.close()
 
 
 if __name__ == "__main__":
