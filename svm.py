@@ -1,6 +1,6 @@
 import data_prep as dp
 import time
-from sklearn import svm
+from sklearn.svm import LinearSVC
 
 
 def run_svm(n_modes=1, fault_prop=.5, repetitions=1, filename='svm_'):
@@ -24,10 +24,11 @@ def run_svm(n_modes=1, fault_prop=.5, repetitions=1, filename='svm_'):
     pre_process_finish = time.time()
     pre_proc_time = pre_process_finish - pre_process_init
 
+    print(filename +' pre-process finished')
 
     #setup classifier
-    estimator = svm.SVC()
-    dp.validation(X, y, estimator, repetitions, n_modes, pre_proc_time,fault_prop,filename)
+    estimator = LinearSVC(dual=False,verbose=True)
+    dp.validation(X, y, estimator, repetitions, n_modes, pre_proc_time, fault_prop,filename)
 
 
 
