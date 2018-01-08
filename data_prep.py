@@ -3,7 +3,7 @@ from sklearn.metrics import confusion_matrix
 import time
 from sklearn.model_selection import train_test_split
 import numpy as np
-from sklearn.model_selection import cross_val_score
+
 colNames = ["Xmv_1", "Xmv_2", "Xmv_3", "Xmv_4", "Xmv_5", "Xmv_6", "Xmv_7", "Xmv_8", "Xmv_9", "Xmv_10", "Xmv_11",
             "Xmv_12", "XMEAS_1", "XMEAS_2", "XMEAS_3", "XMEAS_4", "XMEAS_5", "XMEAS_6", "XMEAS_7",
             "XMEAS_8", "XMEAS_9", "XMEAS_10",
@@ -120,13 +120,13 @@ def validation(X, y, estimator, repetitions, n_modes, pre_proc_time, fault_prop,
 
         # test;n_modes;pre_proc_time;trainig_time;fault_prop;pcs;precision;recall;f1;tp;fp;tn;fn \n
         file.write(
-            '{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};{11};{12};{13};{14};{15};{16}\n'.format(str(j), str(n_modes),
+            '{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};{11};{12};{13};{14}\n'.format(str(j), str(n_modes),
                                                                                                   str(round(
                                                                                                       pre_proc_time / 60,
                                                                                                       2)), str(
                     round(process_time / 60, 2)), str(fault_prop), str(pcs), str(precision), str(
                     recall), str(f1), str(tp), str(fp), str(tn), str(fn), str(
-                    batchsize), str(n_neghbors), str(scores.mean()), str(scores.std() * 2)))
+                    batchsize), str(n_neghbors)))
         print(filename + ' validation-' +str(j) +'fineshed')
         file.close()
 

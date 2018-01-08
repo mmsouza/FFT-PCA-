@@ -40,4 +40,4 @@ n = [5, 6, 7, 8, 9]
     #fft_pca_svm.run_fftpca_svm(n_modes=7, filename='fft_pca_svm_7', pcs=j * 100)
     #pca_svm.run_pca_svm(n_modes=7, filename='pca_svm_7', pcs=j)
 
-KNN.run_KNN(n_modes=7, fault_prop=.5, repetitions=30, filename='10foldKNN_'+str(7), neighbors=5)
+KNN.run_KNN(n_modes=7, fault_prop=.5, repetitions=1, filename='10foldKNN_'+str(7), neighbors=5)

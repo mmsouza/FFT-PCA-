@@ -1,7 +1,7 @@
 import data_prep as dp
 import time
 from sklearn.neighbors import KNeighborsClassifier
-
+from sklearn.model_selection import cross_val_score
 
 def run_KNN(n_modes=1, fault_prop=.5, repetitions=1, filename='KNN',neighbors=5):
 
@@ -29,7 +29,8 @@ def run_KNN(n_modes=1, fault_prop=.5, repetitions=1, filename='KNN',neighbors=5)
     estimator = KNeighborsClassifier(n_neighbors=neighbors)
     dp.validation(X, y, estimator, repetitions, n_modes, pre_proc_time, fault_prop,filename,n_neghbors=neighbors)
     scores = cross_val_score(estimator, X, y, cv=10, scoring='f1')
-
+    file = open(filename + '.csv', 'a')
+    file.write('CrossValidatin: ;'+str(scores.mean()) + '; +/-'+str(scores.std() * 2))
 
 if __name__ == "__main__":
     print('main')
