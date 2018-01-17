@@ -13,6 +13,14 @@ import pca_svm
 
 a = [1, 2, 3, 4, 5, 6, 7]
 pc = [10, 20, 30, 40, 52]
+
+KNN.run_KNN(n_modes=7, fault_prop=.5, repetitions=1, filename='10foldKNN_'+str(7), neighbors=5)
+KNN.run_KNN(n_modes=7, fault_prop=.5, repetitions=1, filename='10foldKNN_'+str(7), neighbors=4)
+KNN.run_KNN(n_modes=7, fault_prop=.5, repetitions=1, filename='10foldKNN_'+str(7), neighbors=3)
+
+
+
+
 '''
 for j in pc:
 
@@ -40,4 +48,3 @@ n = [5, 6, 7, 8, 9]
     #fft_pca_svm.run_fftpca_svm(n_modes=7, filename='fft_pca_svm_7', pcs=j * 100)
     #pca_svm.run_pca_svm(n_modes=7, filename='pca_svm_7', pcs=j)
 
-KNN.run_KNN(n_modes=7, fault_prop=.5, repetitions=1, filename='10foldKNN_'+str(7), neighbors=5)

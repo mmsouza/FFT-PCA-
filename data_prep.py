@@ -36,7 +36,7 @@ def load_df(n_modes, fault_proportion):
 
     for i in range(1, 20):
         fault_list.insert(len(fault_list),
-                          import_file('C:/Users/Lais-WHart/Google Drive/UFRGS/Mestrado/Data mining/full2/', 'Fault_',
+                          import_file('C:/Users/Lais-WHart/Google Drive/full2/', 'Fault_',
                                       'base_mode', i, 24, 696))
         # print(i)
 
@@ -44,7 +44,7 @@ def load_df(n_modes, fault_proportion):
         for j in range(1, n_modes):
             for i in range(1, 20):
                 fault_list.insert(len(fault_list),
-                                  import_file('C:/Users/Lais-WHart/Google Drive/UFRGS/Mestrado/Data mining/full2/',
+                                  import_file('C:/Users/Lais-WHart/Google Drive/full2/',
                                               'Fault_',
                                               'mode_' + str(j), i, 24, 696))
                 #print(j)
@@ -52,13 +52,13 @@ def load_df(n_modes, fault_proportion):
                 # print(faultdf)
 
     normal_list.insert(len(normal_list),
-                       import_file('C:/Users/Lais-WHart/Google Drive/UFRGS/Mestrado/Data mining/full2/', 'Normal',
+                       import_file('C:/Users/Lais-WHart/Google Drive/full2/', 'Normal',
                                    'base_mode', 0, 24, 6528))
 
     if n_modes > 1 & n_modes < 8:
         for j in range(1, n_modes):
             normal_list.insert(len(normal_list),
-                               import_file('C:/Users/Lais-WHart/Google Drive/UFRGS/Mestrado/Data mining/full2/',
+                               import_file('C:/Users/Lais-WHart/Google Drive/full2/',
                                            'Normal',
                                            'mode_' + str(j), 0, 24, 6528))  # 6528 value for fault and normal balance
             #print(j)
