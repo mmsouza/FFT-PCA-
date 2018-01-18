@@ -15,7 +15,7 @@
 
 
 
-# Gradle: .idea/gradle.xml .idea/libraries
+Gradle: .idea/gradle.xml .idea/libraries
 
 
 
@@ -55,7 +55,7 @@
 
 
 
-# *.iml
+*.iml
 
 # modules.xml
 
