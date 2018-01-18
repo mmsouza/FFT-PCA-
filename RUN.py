@@ -14,10 +14,18 @@ import pca_svm
 a = [1, 2, 3, 4, 5, 6, 7]
 pc = [10, 20, 30, 40, 52]
 
+ANN_without_fft_pca.ann_run(n_modes=3,fault_prop=.5,repetitions=5,filename='ANN_3(2)',batchsize=512)
+ANN_without_fft_pca.ann_run(n_modes=4,fault_prop=.5,repetitions=12,filename='ANN_4(2)',batchsize=512)
+ANN_without_fft_pca.ann_run(n_modes=5,fault_prop=.5,repetitions=10,filename='ANN_5(2)',batchsize=512)
+ANN_without_fft_pca.ann_run(n_modes=6,fault_prop=.5,repetitions=12,filename='ANN_6(2)',batchsize=512)
+ANN_without_fft_pca.ann_run(n_modes=7,fault_prop=.5,repetitions=7,filename='ANN_7(2)',batchsize=512)
+
+
+'''
 KNN.run_KNN(n_modes=7, fault_prop=.5, repetitions=1, filename='10foldKNN_'+str(7), neighbors=5)
 KNN.run_KNN(n_modes=7, fault_prop=.5, repetitions=1, filename='10foldKNN_'+str(7), neighbors=4)
 KNN.run_KNN(n_modes=7, fault_prop=.5, repetitions=1, filename='10foldKNN_'+str(7), neighbors=3)
-
+'''
 
 
 
