@@ -1,10 +1,10 @@
-import data_prep as dp
+import data_handler as dp
 import time
-from sklearn.svm import LinearSVC
+from keras.wrappers.scikit_learn import KerasClassifier
+import ann_settings
 
 
-def run_svm(n_modes=1, fault_prop=.5, repetitions=1, filename='svm_'):
-
+def run_ann(n_modes=1, fault_prop=.5, pcs=52, repetitions=1, filename='ANN', batchsize=512):
     normadf, faultdf = dp.load_df(n_modes, fault_prop)
 
     # Adding dummy data, labels that mark if a given occurrence is normal or a failure
@@ -21,17 +21,13 @@ def run_svm(n_modes=1, fault_prop=.5, repetitions=1, filename='svm_'):
     # y = np_utils.to_categorical(full_df.iloc[:, 13:14])
     y = full_df['failure']
 
+    # capture pre-process time
     pre_process_finish = time.time()
     pre_proc_time = pre_process_finish - pre_process_init
 
-    print(filename +' pre-process finished')
-
-    #setup classifier
-    estimator = LinearSVC(dual=False,verbose=True)
-    dp.validation(X, y, estimator, repetitions, n_modes, pre_proc_time, fault_prop,filename)
-
-
-
+    ann_settings.inputsize = pcs  # set input_size as the number of principle components
+    estimator = KerasClassifier(build_fn=ann_settings.bin_baseline_model, epochs=20, batch_size=batchsize, verbose=0)
+    dp.validation(X, y, estimator, repetitions, n_modes, pre_proc_time, fault_prop, filename, batchsize=batchsize)
 
 if __name__ == "__main__":
     print('main')

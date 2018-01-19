@@ -1,10 +1,10 @@
-import data_prep as dp
+import data_handler as dp
 import time
-import pca
+import preprocessor_pca
 from sklearn.neighbors import KNeighborsClassifier
 
 
-def pca_KNN(n_modes=1, fault_prop=.5, pcs=52, repetitions=1, filename='PCA-KNN', batchsize=32, neighbors=5):
+def run_pca_knn(n_modes=1, fault_prop=.5, pcs=52, repetitions=1, filename='PCA-KNN', batchsize=32, neighbors=5):
 
 
     normal_data, fault1_df = dp.load_df(n_modes, fault_prop)
@@ -12,7 +12,7 @@ def pca_KNN(n_modes=1, fault_prop=.5, pcs=52, repetitions=1, filename='PCA-KNN',
 
     # -------------loading data-----------
 
-    X, y = pca.df_pca(normal_data, fault1_df, pcs, dp.colNames)
+    X, y = preprocessor_pca.df_pca(normal_data, fault1_df, pcs, dp.colNames)
 
     pre_process_finish = time.time()
     pre_proc_time = pre_process_finish - pre_process_init
@@ -24,4 +24,4 @@ def pca_KNN(n_modes=1, fault_prop=.5, pcs=52, repetitions=1, filename='PCA-KNN',
 
 
 if __name__ == "__main__":
-    pca_KNN()
+    run_pca_knn()

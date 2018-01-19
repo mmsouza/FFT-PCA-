@@ -37,3 +37,5 @@ def df_pca(normal_data, fault1_df, pcs, colNames):
     return X, y
 
 
+if __name__ == "__main__":
+    print('main')

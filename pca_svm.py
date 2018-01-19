@@ -1,7 +1,7 @@
-import data_prep as dp
+import data_handler as dp
 import time
 from sklearn.svm import LinearSVC
-import pca
+import preprocessor_pca
 
 
 def run_pca_svm(n_modes=1, fault_prop=.5,pcs=52, repetitions=1, filename='fft_pca_svm_'):
@@ -10,7 +10,7 @@ def run_pca_svm(n_modes=1, fault_prop=.5,pcs=52, repetitions=1, filename='fft_pc
 
     # -------------loading data-----------
 
-    X, y = pca.df_pca(normal_data, fault1_df, pcs, dp.colNames)
+    X, y = preprocessor_pca.df_pca(normal_data, fault1_df, pcs, dp.colNames)
 
 
     pre_process_finish = time.time()

@@ -1,11 +1,11 @@
-import data_prep as dp
+import data_handler as dp
 import time
-import ann
-import pca
+import ann_settings
+import preprocessor_pca
 from keras.wrappers.scikit_learn import KerasClassifier
 
 
-def pca_ann(n_modes=1, fault_prop=.5, pcs=52, repetitions=1, filename='PCA-ANN', batchsize=32):
+def run_pca_ann(n_modes=1, fault_prop=.5, pcs=52, repetitions=1, filename='PCA-ANN', batchsize=512):
 
 
     normal_data, fault1_df = dp.load_df(n_modes, fault_prop)
@@ -14,20 +14,20 @@ def pca_ann(n_modes=1, fault_prop=.5, pcs=52, repetitions=1, filename='PCA-ANN',
 
 
     # Applying PCA
-    X, y = pca.df_pca(normal_data, fault1_df, pcs, dp.colNames)
+    X, y = preprocessor_pca.df_pca(normal_data, fault1_df, pcs, dp.colNames)
 
     pre_process_finish = time.time()
     pre_proc_time = pre_process_finish - pre_process_init
 
     # setup classifier
-    ann.inputsize = pcs
-    estimator = KerasClassifier(build_fn=ann.bin_baseline_model, epochs=20, batch_size=batchsize, verbose=0)
+    ann_settings.inputsize = pcs
+    estimator = KerasClassifier(build_fn=ann_settings.bin_baseline_model, epochs=20, batch_size=batchsize, verbose=0)
     dp.validation(X, y, estimator, repetitions, n_modes, pre_proc_time, fault_prop, filename, pcs=pcs, batchsize=batchsize)
 
 
 
 if __name__ == "__main__":
-    pca_ann()
+    run_pca_ann()
     #    CFM.plot_confusion_matrix(cnf_matrix, classes=['Normal', 'Falha'], title=" Matriz de Confusão PCA-ANN")
     # plt.savefig('PCA-ANN', bbox_inches='tight')
     # plt.figure()

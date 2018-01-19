@@ -1,9 +1,9 @@
-import data_prep as dp
+import data_handler as dp
 import time
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import cross_val_score
 
-def run_KNN(n_modes=1, fault_prop=.5, repetitions=1, filename='KNN',neighbors=5):
+def run_knn(n_modes=1, fault_prop=.5, repetitions=1, filename='KNN', neighbors=5):
 
     normadf, faultdf = dp.load_df(n_modes, fault_prop)
 

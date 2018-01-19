@@ -1,6 +1,6 @@
 from sklearn import decomposition
 from sklearn.preprocessing import StandardScaler
-import pre_fft_pca
+import preprocessor_fft_pca
 import pandas as pd
 import matplotlib as plt
 import numpy as np
@@ -8,8 +8,8 @@ import numpy as np
 
 def explained_variance_fft_pca(normadf, faultdf, pcs):
 
-    normal_dfFFT, list_normal_dfFFT = pre_fft_pca.df_fft(normadf, 200)
-    fault_dfFFT, list_fault_dfFFT = pre_fft_pca.df_fft(faultdf, 200)
+    normal_dfFFT, list_normal_dfFFT = preprocessor_fft_pca.df_fft(normadf, 200)
+    fault_dfFFT, list_fault_dfFFT = preprocessor_fft_pca.df_fft(faultdf, 200)
     full_df = normal_dfFFT.append(fault_dfFFT, ignore_index=True)
     names = []
     for j in range(0, 100):
@@ -18,8 +18,8 @@ def explained_variance_fft_pca(normadf, faultdf, pcs):
     full_df = pd.DataFrame(data=scaler.transform(full_df), columns=names)
     pca = decomposition.PCA(n_components=100)
     pca.fit(full_df)
-    normal_piv_df = pre_fft_pca.fft_pac_pivoting(list_normal_dfFFT, pca)
-    fault_piv_df = pre_fft_pca.fft_pac_pivoting(list_fault_dfFFT, pca)
+    normal_piv_df = preprocessor_fft_pca.fft_pac_pivoting(list_normal_dfFFT, pca)
+    fault_piv_df = preprocessor_fft_pca.fft_pac_pivoting(list_fault_dfFFT, pca)
     # ---------------
     pca2 = decomposition.PCA(n_components=pcs)
     fftpca_full_df = normal_piv_df.append(fault_piv_df, ignore_index=True)
