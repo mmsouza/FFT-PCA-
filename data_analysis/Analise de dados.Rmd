@@ -1,0 +1,124 @@
+---
+title: "Análise Base Tamanho dos dados"
+output: html_notebook
+---
+
+
+
+```{r}
+install.packages("ScottKnottESD")
+
+```
+
+
+```{r}
+
+library(ggplot2)
+library(dplyr)
+library(magrittr)
+library(tidyr)
+library(readr)
+library(reshape)
+
+
+
+
+```
+
+
+
+
+```{r}
+
+ANN_list <- list()
+KNN_list <-list()
+
+for (y in 1:7){
+  URL = paste0("C:/Users/mathe/Desktop/Resultados/ANN_",as.character(y),".csv")
+  ANN_list[[y]] <- read_delim(URL, delim=";")
+  ANN_list[[y]]<-ANN_list[[y]] %>% mutate(Tipo= paste0("ANN-",as.character(y)))
+}
+
+for (y in 1:7){
+  URL = paste0("C:/Users/mathe/Desktop/Resultados/KNN_",as.character(y),".csv")
+  KNN_list[[y]] <- read_delim(URL, delim=";")
+  KNN_list[[y]]<-KNN_list[[y]] %>% mutate(Tipo= paste0("KNN-",as.character(y)))
+}
+
+ANN <- merge_recurse(ANN_list)
+KNN <- merge_recurse(KNN_list)
+
+
+```
+
+
+```{r}
+
+ANN$Tipo <- as.factor(ANN$Tipo)
+KNN$Tipo <- as.factor(KNN$Tipo)
+
+group_by(ANN, Tipo) %>%
+  summarise(
+    count = n(),
+    mean = mean(f1, na.rm = TRUE),
+    sd = sd(f1, na.rm = TRUE)
+  )
+
+```
+
+
+```{r}
+
+
+res.aov <- aov(f1 ~ Tipo, data = KNN)
+
+summary(res.aov)
+
+TukeyHSD(res.aov)
+```
+
+```{r}
+
+sumu<- KNN %>% select(Tipo,f1) %>% group_by(Tipo) %>%  summarise(mean(f1))
+colnames(sumu)[2] <- "Avrege_F1"
+
+sumu <- sumu %>% mutate(Avrege_F1= round(Avrege_F1, digits = 2))
+sumu %>% ggplot(aes(Tipo,Avrege_F1,label = Avrege_F1) )+geom_col()+ geom_text(size = 3, position = position_stack(vjust = 0.9))
+    
+
+```
+```{r}
+res.aov <- aov(f1 ~ Tipo, data = ANN)
+
+summary(res.aov)
+
+TukeyHSD(res.aov)
+
+sumu<- ANN %>% select(Tipo,f1) %>% group_by(Tipo) %>%  summarise(mean(f1))
+colnames(sumu)[2] <- "Avrege_F1"
+
+sumu <- sumu %>% mutate(Avrege_F1= round(Avrege_F1, digits = 2))
+sumu %>% ggplot(aes(Tipo,Avrege_F1,label = Avrege_F1) )+geom_col()+ geom_text(size = 3, position = position_stack(vjust = 0.9))
+
+library(ggpubr)
+library(ScottKnottESD)
+
+
+ANN2<-KNN %>% select(Tipo,f1) %>% group_by(Tipo) %>% filter(Tipo=='KNN-2') 
+  
+ggqqplot(ANN2$f1)
+  #check.ANOVA.assumptions(.@f1)
+shapiro.test(ANN2$f1)
+bartlett.test(f1 ~ Tipo, data = KNN)
+fligner.test(f1 ~ Tipo, data = KNN)
+
+```
+
+diferente se o p for menor q 0.05
+```{r}
+library(psych)
+KNN %>% select(Tipo,f1) %>% group_by(Tipo) %>% summarise(a = (describe(f1)$sd)^2)
+a<-describe(ANN2)
+
+```
+
