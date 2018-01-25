@@ -15,6 +15,7 @@ a = [1, 2, 3, 4, 5, 6, 7]
 pc = [10, 20, 30, 40, 52]
 
 for i in pc:
+
     pca_svm.run_pca_svm(n_modes=4, fault_prop=0.5, pcs=i, repetitions=30, filename='svm_4_pcs_' + str(i))
 
 '''
