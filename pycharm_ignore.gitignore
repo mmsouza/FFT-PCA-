@@ -7,9 +7,8 @@
 
 
 
- User-specific stuff: .idea/workspace.xml .idea/tasks.xml .idea/dictionaries .idea/vcs.xml .idea/jsLibraryMappings.xml
+User-specific stuff: .idea/workspace.xml .idea/tasks.xml .idea/dictionaries .idea/vcs.xml .idea/jsLibraryMappings.xml
 
-local_config.py
 
 
 # Sensitive or high-churn files: .idea/dataSources.ids .idea/dataSources.xml .idea/dataSources.local.xml .idea/sqlDataSources.xml .idea/dynamic.xml .idea/uiDesigner.xml
@@ -54,11 +53,11 @@ Gradle: .idea/gradle.xml .idea/libraries
 
 # Comment Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-215987721
 
-
+local_config.py
 
 *.iml
 
-# modules.xml
+modules.xml
 
 .idea/misc.xml
 
