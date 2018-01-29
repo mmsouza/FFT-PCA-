@@ -18,6 +18,8 @@ for i in pc:
 
     pca_svm.run_pca_svm(n_modes=4, fault_prop=0.5, pcs=i, repetitions=30, filename='svm_4_pcs_' + str(i))
 
+
+
 '''
 fft_pca_ann.run_pca_fft_ann(n_modes=1, fault_prop=0.5, pcs=5200, repetitions=1, filename='fftpca_ann_test',
                             batchsize=512)

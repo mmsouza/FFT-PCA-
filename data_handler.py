@@ -86,7 +86,7 @@ def validation(X, y, estimator, repetitions, n_modes, pre_proc_time, fault_prop,
                n_neghbors=-1):
 
     file = open(lc.write_path + filename + '.csv', 'a')
-    file.write('#test;n_modes;pre_proc_time;trainig_time;fault_prop;pcs;precision;recall;f1;tp;fp;tn;fn;batchsize;n_neghbors \n')
+    file.write('#test;n_modes;pre_proc_time;trainig_time;exec_time;fault_prop;pcs;precision;recall;f1;tp;fp;tn;fn;batchsize;n_neghbors \n')
     file.close()
     for j in range(1, repetitions + 1):
         file = open(filename + '.csv', 'a')
@@ -94,7 +94,10 @@ def validation(X, y, estimator, repetitions, n_modes, pre_proc_time, fault_prop,
 
         x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.20, shuffle=True)
         estimator.fit(np.array(x_train), np.array(y_train))
+
+        exec_time_init = time.time()
         ypred = estimator.predict(np.array(x_test))
+        exec_time = time.time() - exec_time_init
 
         process_finish = time.time()
         process_time = process_finish - process_init
@@ -122,11 +125,11 @@ def validation(X, y, estimator, repetitions, n_modes, pre_proc_time, fault_prop,
 
         # test;n_modes;pre_proc_time;trainig_time;fault_prop;pcs;precision;recall;f1;tp;fp;tn;fn \n
         file.write(
-            '{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};{11};{12};{13};{14}\n'.format(str(j), str(n_modes),
+            '{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};{11};{12};{13};{14};{15}\n'.format(str(j), str(n_modes),
                                                                                                   str(round(
                                                                                                       pre_proc_time / 60,
                                                                                                       2)), str(
-                    round(process_time / 60, 2)), str(fault_prop), str(pcs), str(precision), str(
+                    round(process_time / 60, 2)), str(round(exec_time / 60, 2)), str(fault_prop), str(pcs), str(precision), str(
                     recall), str(f1), str(tp), str(fp), str(tn), str(fn), str(
                     batchsize), str(n_neghbors)))
         print(filename + ' validation-' +str(j) +'fineshed')
