@@ -4,7 +4,7 @@ import preprocessor_pca
 from sklearn.neighbors import KNeighborsClassifier
 
 
-def run_pca_knn(n_modes=1, fault_prop=.5, pcs=52, repetitions=1, filename='PCA-KNN', batchsize=32, neighbors=5):
+def run(n_modes=1, fault_prop=.5, pcs=52, repetitions=1, filename='PCA-KNN', batchsize=32, neighbors=5):
 
 
     normal_data, fault1_df = dp.load_df(n_modes, fault_prop)
@@ -24,4 +24,4 @@ def run_pca_knn(n_modes=1, fault_prop=.5, pcs=52, repetitions=1, filename='PCA-K
 
 
 if __name__ == "__main__":
-    run_pca_knn()
+    run()

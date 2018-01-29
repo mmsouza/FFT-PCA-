@@ -3,7 +3,7 @@ import time
 from sklearn.svm import LinearSVC
 
 
-def run_svm(n_modes=1, fault_prop=.5, repetitions=1, filename='svm_'):
+def run(n_modes=1, fault_prop=.5, repetitions=1, filename='svm_'):
 
     normadf, faultdf = dp.load_df(n_modes, fault_prop)
 

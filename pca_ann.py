@@ -5,7 +5,7 @@ import preprocessor_pca
 from keras.wrappers.scikit_learn import KerasClassifier
 
 
-def run_pca_ann(n_modes=1, fault_prop=.5, pcs=52, repetitions=1, filename='PCA-ANN', batchsize=512):
+def run(n_modes=1, fault_prop=.5, pcs=52, repetitions=1, filename='PCA-ANN', batchsize=512):
 
 
     normal_data, fault1_df = dp.load_df(n_modes, fault_prop)
@@ -27,7 +27,7 @@ def run_pca_ann(n_modes=1, fault_prop=.5, pcs=52, repetitions=1, filename='PCA-A
 
 
 if __name__ == "__main__":
-    run_pca_ann()
+    run()
     #    CFM.plot_confusion_matrix(cnf_matrix, classes=['Normal', 'Falha'], title=" Matriz de Confusão PCA-ANN")
     # plt.savefig('PCA-ANN', bbox_inches='tight')
     # plt.figure()

@@ -7,7 +7,7 @@ from sklearn.neighbors import KNeighborsClassifier
 
 
 
-def run_pca_fft_knn(n_modes=1, fault_prop=.5, pcs=5200, repetitions=1, filename='FFT-PCA-KNN', neighbors=5):
+def run(n_modes=1, fault_prop=.5, pcs=5200, repetitions=1, filename='FFT-PCA-KNN', neighbors=5):
 
     normadf, faultdf = dp.load_df(n_modes, fault_prop)
 
@@ -29,7 +29,7 @@ def run_pca_fft_knn(n_modes=1, fault_prop=.5, pcs=5200, repetitions=1, filename=
 if __name__ == "__main__":
     print('main')
 
-#run_pca_fft_knn()
+#run()
 #plt.show()
 
 

@@ -4,7 +4,7 @@ from keras.wrappers.scikit_learn import KerasClassifier
 import ann_settings
 
 
-def run_ann(n_modes=1, fault_prop=.5, pcs=52, repetitions=1, filename='ANN', batchsize=512):
+def run(n_modes=1, fault_prop=.5, pcs=52, repetitions=1, filename='ANN', batchsize=512):
     normadf, faultdf = dp.load_df(n_modes, fault_prop)
 
     # Adding dummy data, labels that mark if a given occurrence is normal or a failure

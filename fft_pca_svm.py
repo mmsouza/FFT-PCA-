@@ -4,7 +4,7 @@ from sklearn.svm import LinearSVC
 import preprocessor_pca
 import preprocessor_fft_pca
 
-def run_fft_pca_svm(n_modes=1, fault_prop=.5, pcs=5200, repetitions=1, filename='pca_svm_'):
+def run(n_modes=1, fault_prop=.5, pcs=5200, repetitions=1, filename='pca_svm_'):
     normal_data, fault1_df = dp.load_df(n_modes, fault_prop)
     pre_process_init = time.time()
 

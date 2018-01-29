@@ -8,7 +8,7 @@ from keras.wrappers.scikit_learn import KerasClassifier
 
 
 
-def run_pca_fft_ann(n_modes=1, fault_prop=.5, pcs=5200, repetitions=1, filename='FFT-PCA-ANN', batchsize=512):
+def run(n_modes=1, fault_prop=.5, pcs=5200, repetitions=1, filename='FFT-PCA-ANN', batchsize=512):
     normadf, faultdf = dp.load_df(n_modes, fault_prop)
     pre_process_init = time.time()
 
@@ -30,7 +30,7 @@ def run_pca_fft_ann(n_modes=1, fault_prop=.5, pcs=5200, repetitions=1, filename=
 # ---------------------------------------------------------------------------------------------------------------------------------
 
 if __name__ == "__main__":
-    run_pca_fft_ann(repetitions=1, batchsize=600)
+    run(repetitions=1, batchsize=600)
     # plt.show()
     # CFM.plot_confusion_matrix(cnf_matrix, classes=['Normal','Falha'],title= " Matriz de Confusão FFT_PCA_ANN")
     # plt.savefig('FFT_PCA', bbox_inches='tight')
