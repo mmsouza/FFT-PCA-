@@ -13,4 +13,12 @@ a = [1, 2, 3, 4, 5, 6, 7]
 pc = [10, 20, 30, 40, 52]
 
 for i in pc:
-    fft_pca_svm.run(n_modes=4, fault_prop=0.5, pcs=i * 100, filename='fft_pca_svm_4_pcs_' + str(i))
+    fft_pca_svm.run(n_modes=7, fault_prop=0.5, pcs=i * 100, filename='fft_pca_svm_7_pcs_' + str(i))
+
+for i in pc:
+    fft_pca_ann.run(n_modes=7, fault_prop=0.5, pcs=i * 100, filename='fft_pca_svm_7_pcs_' + str(i))
+
+for i in pc:
+    fft_pca_knn.run(n_modes=7, fault_prop=0.5, pcs=i * 100, filename='fft_pca_svm_7_pcs_' + str(i))
+
+

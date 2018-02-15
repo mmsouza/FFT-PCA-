@@ -10,7 +10,7 @@ def timing_test_KNN(neighbors=5):
     normadf, faultdf = dp.load_df(1, 0.5)
 
     # Adding dummy data, labels that mark if a given occurrence is normal or a failure
-    pre_process_init = time.time()
+    pre_process_init =time.perf_counter()
     faultdf['failure'] = 1
     normadf['failure'] = 0
     # join both data classes
@@ -23,7 +23,7 @@ def timing_test_KNN(neighbors=5):
     # y = np_utils.to_categorical(full_df.iloc[:, 13:14])
     y = full_df['failure']
 
-    pre_process_finish = time.time()
+    pre_process_finish =time.perf_counter()
     pre_proc_time = pre_process_finish - pre_process_init
 
     # setup classifier
@@ -32,9 +32,9 @@ def timing_test_KNN(neighbors=5):
     x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.20, shuffle=True)
     estimator.fit(np.array(x_train), np.array(y_train))
 
-    predict_time_init = time.time()
+    predict_time_init =time.perf_counter()
     ypred = estimator.predict(np.array(x_test[1, :]))
-    predict_time = time.time() - predict_time_init
+    predict_time =time.perf_counter() - predict_time_init
 
     print("Prediction KNN time : {1}".format(str(predict_time)))
 

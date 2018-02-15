@@ -15,35 +15,46 @@ a = [1, 2, 3, 4, 5, 6, 7]
 pc = [10, 20, 30, 40, 52]
 n = [1, 2, 3, 4, 5]
 
-
-plain_ann.run(filename='timmin_ann_1')
-plain_svm.run(filename='timmin_svm_1')
-
-for j in n:
-    plain_knn.run(filename='timmin_knn_1', neighbors=j)
-
-for i in pc:
-    pca_svm.run(pcs=i, filename='timmin_pca_svm__pcs_' + str(i))
-for i in pc:
-    fft_pca_svm.run(pcs=i, filename='timmin_fft_pca_svm__pcs_' + str(i))
-for i in pc:
-    pca_ann.run(pcs=i, filename='timmin_pca_ann_' + str(i))
-for i in pc:
-    fft_pca_ann.run(pcs=i, filename='timmin_fft_pca_ann' + str(i))
-
-for i in pc:
-    for j in n:
-        pca_knn.run(pcs=i, filename='timmin_pca_knn' + str(i), neighbors=j)
-
-for i in pc:
-    for j in n:
-        fft_pca_knn.run(pcs=i, filename='timmin_fft_pca_knn' + str(i), neighbors=j)
+# plain_ann.run(filename='timmin_ann_1')
+# plain_svm.run(filename='timmin_svm_1')
 
 
+pca_ann.run(n_modes=4, fault_prop=.05, pcs=52, repetitions=6, filename="PCA-ANN-4modes-52pcs")
+pca_ann.run(n_modes=4, fault_prop=.05, pcs=40, repetitions=6, filename="PCA-ANN-4modes-40pcs")
 
-
-
+# for i in pc:
+#   fft_pca_svm.run(n_modes=4,repetitions=30, fault_prop=0.5, pcs=i * 100, filename='fft_pca_svm_4_pcs_' + str(i))
 '''
+for j in n:
+    plain_knn.run(filename='2timmin_knn_'+str(j), neighbors=j)
+
+#plain_ann.run(filename='timmin_ann_1')
+#plain_svm.run(filename='timmin_svm_1')
+
+
+
+for i in pc:
+    pca_svm.run(pcs=i, filename='2timmin_pca_svm__pcs_' + str(i))
+for i in pc:
+    fft_pca_svm.run(pcs=i, filename='2timmin_fft_pca_svm__pcs_' + str(i))
+for i in pc:
+    pca_ann.run(pcs=i, filename='2timmin_pca_ann_' + str(i))
+for i in pc:
+    fft_pca_ann.run(pcs=i, filename='2timmin_fft_pca_ann' + str(i))
+
+for i in pc:
+    for j in n:
+        pca_knn.run(pcs=i, filename='2timmin_pca_knn' + str(i), neighbors=j)
+
+for i in pc:
+    for j in n:
+        fft_pca_knn.run(pcs=i, filename='2timmin_fft_pca_knn' + str(i), neighbors=j)
+
+
+
+
+
+
 for i in pc:
 
     pca_svm.run(n_modes=4, fault_prop=0.5, pcs=i, repetitions=30, filename='svm_4_pcs_' + str(i))

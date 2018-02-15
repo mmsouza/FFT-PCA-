@@ -8,7 +8,7 @@ def run(n_modes=1, fault_prop=.5, repetitions=1, filename='KNN', neighbors=5):
     normadf, faultdf = dp.load_df(n_modes, fault_prop)
 
     # Adding dummy data, labels that mark if a given occurrence is normal or a failure
-    pre_process_init = time.time()
+    pre_process_init =time.perf_counter()
     faultdf['failure'] = 1
     normadf['failure'] = 0
     # join both data classes
@@ -21,7 +21,7 @@ def run(n_modes=1, fault_prop=.5, repetitions=1, filename='KNN', neighbors=5):
     # y = np_utils.to_categorical(full_df.iloc[:, 13:14])
     y = full_df['failure']
 
-    pre_process_finish = time.time()
+    pre_process_finish =time.perf_counter()
     pre_proc_time = pre_process_finish - pre_process_init
 
 

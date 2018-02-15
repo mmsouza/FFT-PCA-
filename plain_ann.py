@@ -8,7 +8,7 @@ def run(n_modes=1, fault_prop=.5, pcs=52, repetitions=1, filename='ANN', batchsi
     normadf, faultdf = dp.load_df(n_modes, fault_prop)
 
     # Adding dummy data, labels that mark if a given occurrence is normal or a failure
-    pre_process_init = time.time()
+    pre_process_init =time.perf_counter()
     faultdf['failure'] = 1
     normadf['failure'] = 0
     # join both data classes
@@ -22,7 +22,7 @@ def run(n_modes=1, fault_prop=.5, pcs=52, repetitions=1, filename='ANN', batchsi
     y = full_df['failure']
 
     # capture pre-process time
-    pre_process_finish = time.time()
+    pre_process_finish =time.perf_counter()
     pre_proc_time = pre_process_finish - pre_process_init
 
     ann_settings.inputsize = pcs  # set input_size as the number of principle components

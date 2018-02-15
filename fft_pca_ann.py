@@ -10,11 +10,11 @@ from keras.wrappers.scikit_learn import KerasClassifier
 
 def run(n_modes=1, fault_prop=.5, pcs=5200, repetitions=1, filename='FFT-PCA-ANN', batchsize=512):
     normadf, faultdf = dp.load_df(n_modes, fault_prop)
-    pre_process_init = time.time()
+    pre_process_init =time.perf_counter()
 
     X, y = preprocessor_fft_pca.df_fft_pca(normadf, faultdf, pcs)
 
-    pre_process_finish = time.time()
+    pre_process_finish =time.perf_counter()
     pre_proc_time = pre_process_finish - pre_process_init
 
     # ---------------------------------------------------------------------------------------------------------------------------------
