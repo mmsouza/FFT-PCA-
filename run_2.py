@@ -13,66 +13,66 @@ a = [1, 2, 3, 4, 5, 6, 7]
 pc = [10, 20, 30, 40, 52]
 
 for i in pc:
-    pca_ann.run(n_modes=1, fault_prop=0.5, pcs=i * 100, repetitions=1, filename='pca_ann_m-1_pc-' + str(i * 100),
-                    batchsize=512)
+    pca_ann.run(n_modes=1, fault_prop=0.5, pcs=i, repetitions=1, filename='pca_ann_m-1_pc-' + str(i),
+                batchsize=512)
 
 for i in pc:
-    pca_ann.run(n_modes=2, fault_prop=0.5, pcs=i * 100, repetitions=1, filename='pca_ann_m-1_pc-' + str(i * 100),
-                    batchsize=512)
+    pca_ann.run(n_modes=2, fault_prop=0.5, pcs=i, repetitions=1, filename='pca_ann_m-1_pc-' + str(i),
+                batchsize=512)
 for i in pc:
-    pca_ann.run(n_modes=3, fault_prop=0.5, pcs=i * 100, repetitions=1, filename='pca_ann_m-1_pc-' + str(i * 100),
-                    batchsize=512)
+    pca_ann.run(n_modes=3, fault_prop=0.5, pcs=i, repetitions=1, filename='pca_ann_m-1_pc-' + str(i),
+                batchsize=512)
 for i in pc:
-    pca_ann.run(n_modes=5, fault_prop=0.5, pcs=i * 100, repetitions=1, filename='pca_ann_m-1_pc-' + str(i * 100),
-                    batchsize=512)
+    pca_ann.run(n_modes=5, fault_prop=0.5, pcs=i, repetitions=1, filename='pca_ann_m-1_pc-' + str(i),
+                batchsize=512)
 for i in pc:
-    pca_ann.run(n_modes=6, fault_prop=0.5, pcs=i * 100, repetitions=1, filename='pca_ann_m-1_pc-' + str(i * 100),
-                    batchsize=512)
+    pca_ann.run(n_modes=6, fault_prop=0.5, pcs=i, repetitions=1, filename='pca_ann_m-1_pc-' + str(i),
+                batchsize=512)
 for i in pc:
-    pca_ann.run(n_modes=7, fault_prop=0.5, pcs=i * 100, repetitions=1, filename='pca_ann_m-1_pc-' + str(i * 100),
-                    batchsize=512)
+    pca_ann.run(n_modes=7, fault_prop=0.5, pcs=i, repetitions=1, filename='pca_ann_m-1_pc-' + str(i),
+                batchsize=512)
 
 # --------------------fft-pca-svm----------------------------------------------------------------------------------
 for i in pc:
-    pca_svm.run(n_modes=1, fault_prop=0.5, pcs=i * 100, repetitions=1, filename='pca_svm_m-1_pc-' + str(i * 100))
+    pca_svm.run(n_modes=1, fault_prop=0.5, pcs=i, repetitions=1, filename='pca_svm_m-1_pc-' + str(i))
 
 for i in pc:
-    pca_svm.run(n_modes=2, fault_prop=0.5, pcs=i * 100, repetitions=1, filename='pca_svm_m-1_pc-' + str(i * 100))
+    pca_svm.run(n_modes=2, fault_prop=0.5, pcs=i, repetitions=1, filename='pca_svm_m-1_pc-' + str(i))
 
 for i in pc:
-    pca_svm.run(n_modes=3, fault_prop=0.5, pcs=i * 100, repetitions=1, filename='pca_svm_m-1_pc-' + str(i * 100))
+    pca_svm.run(n_modes=3, fault_prop=0.5, pcs=i, repetitions=1, filename='pca_svm_m-1_pc-' + str(i))
 
 for i in pc:
-    pca_svm.run(n_modes=5, fault_prop=0.5, pcs=i * 100, repetitions=1, filename='pca_svm_m-1_pc-' + str(i * 100))
+    pca_svm.run(n_modes=5, fault_prop=0.5, pcs=i, repetitions=1, filename='pca_svm_m-1_pc-' + str(i))
 
 for i in pc:
-    pca_svm.run(n_modes=6, fault_prop=0.5, pcs=i * 100, repetitions=1, filename='pca_svm_m-1_pc-' + str(i * 100))
+    pca_svm.run(n_modes=6, fault_prop=0.5, pcs=i, repetitions=1, filename='pca_svm_m-1_pc-' + str(i))
 
 for i in pc:
-    pca_svm.run(n_modes=7, fault_prop=0.5, pcs=i * 100, repetitions=1, filename='pca_svm_m-1_pc-' + str(i * 100))
+    pca_svm.run(n_modes=7, fault_prop=0.5, pcs=i, repetitions=1, filename='pca_svm_m-1_pc-' + str(i))
 
     # ---------------fft-pca-Knn---------------------------------------------------------------------------------    
 
     for i in pc:
-        pca_knn.run(n_modes=1, fault_prop=0.5, pcs=i * 100, repetitions=1,
-                        filename='pca_knn_m-1_pc-' + str(i * 100))
+        pca_knn.run(n_modes=1, fault_prop=0.5, pcs=i, repetitions=1,
+                    filename='pca_knn_m-1_pc-' + str(i))
 
     for i in pc:
-        pca_knn.run(n_modes=2, fault_prop=0.5, pcs=i * 100, repetitions=1,
-                        filename='pca_knn_m-1_pc-' + str(i * 100))
+        pca_knn.run(n_modes=2, fault_prop=0.5, pcs=i, repetitions=1,
+                    filename='pca_knn_m-1_pc-' + str(i))
 
     for i in pc:
-        pca_knn.run(n_modes=3, fault_prop=0.5, pcs=i * 100, repetitions=1,
-                        filename='pca_knn_m-1_pc-' + str(i * 100))
+        pca_knn.run(n_modes=3, fault_prop=0.5, pcs=i, repetitions=1,
+                    filename='pca_knn_m-1_pc-' + str(i))
 
     for i in pc:
-        pca_knn.run(n_modes=5, fault_prop=0.5, pcs=i * 100, repetitions=1,
-                        filename='pca_knn_m-1_pc-' + str(i * 100))
+        pca_knn.run(n_modes=5, fault_prop=0.5, pcs=i, repetitions=1,
+                    filename='pca_knn_m-1_pc-' + str(i))
 
     for i in pc:
-        pca_knn.run(n_modes=6, fault_prop=0.5, pcs=i * 100, repetitions=1,
-                        filename='pca_knn_m-1_pc-' + str(i * 100))
+        pca_knn.run(n_modes=6, fault_prop=0.5, pcs=i, repetitions=1,
+                    filename='pca_knn_m-1_pc-' + str(i))
 
     for i in pc:
-        pca_knn.run(n_modes=7, fault_prop=0.5, pcs=i * 100, repetitions=1,
-                        filename='pca_knn_m-1_pc-' + str(i * 100))
+        pca_knn.run(n_modes=7, fault_prop=0.5, pcs=i, repetitions=1,
+                    filename='pca_knn_m-1_pc-' + str(i))
