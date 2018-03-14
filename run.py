@@ -8,19 +8,98 @@ import matplotlib.pyplot as plt
 import plain_svm
 import fft_pca_svm
 import pca_svm
-
+import time
 # ANN_without_fft_pca.run(n_modes=1, fault_prop=.5, pcs=52, repetitions=1, filename='ANN', batchsize=500)
 
 a = [1, 2, 3, 4, 5, 6, 7]
 pc = [10, 20, 30, 40, 52]
 n = [1, 2, 3, 4, 5]
 
+
+for i in pc:
+    fft_pca_ann.run(n_modes=1, fault_prop=0.5, pcs=i*100, repetitions=1, filename='fft_pca_ann_m-1_pc-'+str(i*100),
+                            batchsize=512)
+
+for i in pc:
+    fft_pca_ann.run(n_modes=2, fault_prop=0.5, pcs=i*100, repetitions=1, filename='fft_pca_ann_m-1_pc-'+str(i*100),
+                            batchsize=512)
+for i in pc:
+    fft_pca_ann.run(n_modes=3, fault_prop=0.5, pcs=i*100, repetitions=1, filename='fft_pca_ann_m-1_pc-'+str(i*100),
+                            batchsize=512)
+for i in pc:
+    fft_pca_ann.run(n_modes=5, fault_prop=0.5, pcs=i*100, repetitions=1, filename='fft_pca_ann_m-1_pc-'+str(i*100),
+                            batchsize=512)
+for i in pc:
+    fft_pca_ann.run(n_modes=6, fault_prop=0.5, pcs=i*100, repetitions=1, filename='fft_pca_ann_m-1_pc-'+str(i*100),
+                            batchsize=512)
+for i in pc:
+    fft_pca_ann.run(n_modes=7, fault_prop=0.5, pcs=i*100, repetitions=1, filename='fft_pca_ann_m-1_pc-'+str(i*100),
+                            batchsize=512)
+
+
+#--------------------fft-pca-svm----------------------------------------------------------------------------------
+for i in pc:
+    fft_pca_svm.run(n_modes=1, fault_prop=0.5, pcs=i*100, repetitions=1, filename='fft_pca_svm_m-1_pc-'+str(i*100))
+
+for i in pc:
+    fft_pca_svm.run(n_modes=2, fault_prop=0.5, pcs=i*100, repetitions=1, filename='fft_pca_svm_m-1_pc-'+str(i*100))
+
+for i in pc:
+    fft_pca_svm.run(n_modes=3, fault_prop=0.5, pcs=i*100, repetitions=1, filename='fft_pca_svm_m-1_pc-'+str(i*100))
+
+for i in pc:
+    fft_pca_svm.run(n_modes=5, fault_prop=0.5, pcs=i*100, repetitions=1, filename='fft_pca_svm_m-1_pc-'+str(i*100))
+
+for i in pc:
+    fft_pca_svm.run(n_modes=6, fault_prop=0.5, pcs=i*100, repetitions=1, filename='fft_pca_svm_m-1_pc-'+str(i*100))
+
+for i in pc:
+    fft_pca_svm.run(n_modes=7, fault_prop=0.5, pcs=i*100, repetitions=1, filename='fft_pca_svm_m-1_pc-'+str(i*100))
+
+
+#---------------fft-pca-Knn---------------------------------------------------------------------------------
+
+    for i in pc:
+        fft_pca_knn.run(n_modes=1, fault_prop=0.5, pcs=i * 100, repetitions=1,
+                        filename='fft_pca_knn_m-1_pc-' + str(i * 100))
+
+    for i in pc:
+        fft_pca_knn.run(n_modes=2, fault_prop=0.5, pcs=i * 100, repetitions=1,
+                        filename='fft_pca_knn_m-1_pc-' + str(i * 100))
+
+    for i in pc:
+        fft_pca_knn.run(n_modes=3, fault_prop=0.5, pcs=i * 100, repetitions=1,
+                        filename='fft_pca_knn_m-1_pc-' + str(i * 100))
+
+    for i in pc:
+        fft_pca_knn.run(n_modes=5, fault_prop=0.5, pcs=i * 100, repetitions=1,
+                        filename='fft_pca_knn_m-1_pc-' + str(i * 100))
+
+    for i in pc:
+        fft_pca_knn.run(n_modes=6, fault_prop=0.5, pcs=i * 100, repetitions=1,
+                        filename='fft_pca_knn_m-1_pc-' + str(i * 100))
+
+    for i in pc:
+        fft_pca_knn.run(n_modes=7, fault_prop=0.5, pcs=i * 100, repetitions=1,
+                        filename='fft_pca_knn_m-1_pc-' + str(i * 100))
+
+
+
+
 # plain_ann.run(filename='timmin_ann_1')
 # plain_svm.run(filename='timmin_svm_1')
 
+#plain_svm.run(filename='Tempo_sva.csv')
+ini=time.time()
+plain_knn.run(filename='Tempo_Knn.csv')
+fin= time.time()-ini
+print(str(fin))
 
-pca_ann.run(n_modes=4, fault_prop=.05, pcs=52, repetitions=6, filename="PCA-ANN-4modes-52pcs")
-pca_ann.run(n_modes=4, fault_prop=.05, pcs=40, repetitions=6, filename="PCA-ANN-4modes-40pcs")
+#plain_ann.run(filename='Tempo_Ann.csv')
+
+
+#pca_ann.run(n_modes=4, fault_prop=.05, pcs=52, repetitions=10, filename="PCA-ANN-4modes-52pcs")
+#pca_ann.run(n_modes=4, fault_prop=.05, pcs=40, repetitions=10, filename="PCA-ANN-4modes-40pcs")
 
 # for i in pc:
 #   fft_pca_svm.run(n_modes=4,repetitions=30, fault_prop=0.5, pcs=i * 100, filename='fft_pca_svm_4_pcs_' + str(i))

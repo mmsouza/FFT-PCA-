@@ -97,9 +97,11 @@ def validation(X, y, estimator, repetitions, n_modes, pre_proc_time, fault_prop,
         process_finish = time.perf_counter()
         process_time = process_finish - process_init
 
-        exec_time_init = time.perf_counter()
+        #exec_time_init = time.perf_counter()
+        exec_time_init = time.time()
         ypred = estimator.predict(np.array(x_test))
-        exec_time = time.perf_counter() - exec_time_init
+        #exec_time = time.perf_counter() - exec_time_init
+        exec_time = time.time() - exec_time_init
         print('ypred len:' + str(len(ypred)))
 
 
@@ -131,7 +133,7 @@ def validation(X, y, estimator, repetitions, n_modes, pre_proc_time, fault_prop,
                                                                                                   str(round(
                                                                                                       pre_proc_time / 60,
                                                                                                       2)),str(
-                    round(process_time / 60, 4)), str(exec_time), str(len(ypred)),str(exec_time/len(ypred)), str(fault_prop), str(pcs), str(precision), str(
+                    round(process_time / 60, 4)), exec_time, str(len(ypred)),str(exec_time/len(ypred)), str(fault_prop), str(pcs), str(precision), str(
                     recall), str(f1), str(tp), str(fp), str(tn), str(fn), str(
                     batchsize), str(n_neghbors)))
         print(lc.write_path + filename + 'validation-' +str(j) +'fineshed')
